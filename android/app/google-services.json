@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "350350146473",
+    "project_id": "nexevent-95ef9",
+    "storage_bucket": "nexevent-95ef9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350350146473:android:abdb4cb7350b16ceef22b8",
+        "android_client_info": {
+          "package_name": "com.example.nex_event_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ_J79IIzbNDCSMEDvDFM4k7sUzhW4OGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
