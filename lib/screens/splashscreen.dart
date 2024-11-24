@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Background image covering the entire screen
+
           Positioned.fill(
             child: Image.asset(
               "assets/splashimage.png", // Replace with your background image path

@@ -34,7 +34,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   bool _isUploading = false;
 
   final ImagePicker _picker = ImagePicker();
-  final String _imageBBApiKey = '9b0fc2dd74bc6240f21869b39ef5929c'; // Your ImageBB API Key
+  final String _imageBBApiKey = '9b0fc2dd74bc6240f21869b39ef5929c';
 
   Future<void> _pickImage() async {
     if (kIsWeb) {
@@ -98,10 +98,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
 
     // Role assignment logic based on credentials
-    if (_emailController.text == 'fahadmahmud.icte@gmail.com' &&
-        _passwordController.text == '123456@Pp') {
-      _role = 'super_admin';
-    }
+    // if (_emailController.text == 'fahadmahmud.icte@gmail.com' &&
+    //     _passwordController.text == '123456@Pp') {
+    //   _role = 'super_admin';
+    // }
 
     setState(() {
       _isUploading = true;
@@ -134,6 +134,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Registration successful!')),
+
     );
 
     setState(() {
@@ -142,7 +143,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
       _image = null;
       _webImage = null;
       _uploadedImageUrl = null;
+      _webImage?.clear();
+      _nameController.clear();
+      _emailController.clear();
+      _phoneController.clear();
+      _educationController.clear();
+      _universityController.clear();
+      _passwordController.clear();
+      _retypePasswordController.clear();
+
+
+
     });
+
+
   }
 
   Widget _buildImagePreview() {
@@ -248,6 +262,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       ),
     );
   }
+
 
   Widget _buildTextField(String label, TextEditingController controller) {
     return TextFormField(
