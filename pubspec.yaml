@@ -42,6 +42,8 @@ dependencies:
   firebase_storage: ^12.3.5
   http: ^1.2.2
   file_picker: ^8.1.4
+  email_auth: ^2.0.0
+  mailer: ^6.2.0
 
 dev_dependencies:
   flutter_test:

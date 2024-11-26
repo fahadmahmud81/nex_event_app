@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:nex_event_app/panels/adminPanel.dart';
+import 'package:nex_event_app/panels/adminPanel.dart';
+
+import 'package:nex_event_app/screens/loginPage.dart';
 import 'package:nex_event_app/screens/logoScreen.dart';
 import 'firebase_options.dart';
 import 'package:get/get.dart';
@@ -15,6 +19,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(const MyApp());
 }
 

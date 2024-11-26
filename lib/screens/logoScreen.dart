@@ -1,5 +1,6 @@
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:nex_event_app/screens/loginPage.dart';
 import 'package:nex_event_app/screens/splashscreen.dart';
 
 class LogoSplashScreen extends StatelessWidget {
@@ -21,7 +22,7 @@ class LogoSplashScreen extends StatelessWidget {
         child: Image.asset("assets/nexaevent.png"),
       ),
       onAnimationEnd: () => debugPrint("On Fade In End"),
-      nextScreen: SplashScreen(),
+      nextScreen: LoginPage(),
     );
   }
 }

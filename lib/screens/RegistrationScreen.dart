@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart'; // For kIsWeb
-import 'package:file_picker/file_picker.dart'; // For web file picker
+import 'package:file_picker/file_picker.dart';
+
+import 'otpCode.dart'; // For web file picker
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -97,66 +99,95 @@ class _RegistrationPageState extends State<RegistrationPage> {
       return;
     }
 
-    // Role assignment logic based on credentials
-    // if (_emailController.text == 'fahadmahmud.icte@gmail.com' &&
-    //     _passwordController.text == '123456@Pp') {
-    //   _role = 'super_admin';
-    // }
-
     setState(() {
       _isUploading = true;
     });
 
-    final imageUrl = await _uploadImageToImageBB();
+    try {
+      // Check if email already exists
+      final existingUser = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: _emailController.text)
+          .get();
 
-    if (imageUrl == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Image upload failed.')),
-      );
+      if (existingUser.docs.isNotEmpty) {
+        setState(() {
+          _isUploading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('This email is already registered!')),
+        );
+        return;
+      }
+
+      // Create user with Firebase Authentication
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+
+      // Send email verification
+      await userCredential.user?.sendEmailVerification();
+
+      // Upload image
+      final imageUrl = await _uploadImageToImageBB();
+      if (imageUrl == null) {
+        setState(() {
+          _isUploading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Image upload failed.')),
+        );
+        return;
+      }
+
+      // Add user details to Firestore
+      await FirebaseFirestore.instance.collection('registrations').add({
+        'name': _nameController.text.trim(),
+        'email': _emailController.text.trim(),
+        'phone': _phoneController.text.trim(),
+        'education': _educationController.text.trim(),
+        'university': _universityController.text.trim(),
+        'category': _category,
+        'role': _role,
+        'profileImage': imageUrl,
+        'emailVerified': false,
+      });
+
       setState(() {
         _isUploading = false;
       });
-      return;
+
+      // Navigate to OTP verification screen (or next step)
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EmailVerificationPage(
+            email: _emailController.text,
+            name: _nameController.text,
+            phone: _phoneController.text,
+            category: _category,
+            role: _role,
+            education: _educationController.text,
+            university: _universityController.text,
+            password: _passwordController.text,
+            imageUrl: imageUrl,
+            registrationData: {},
+          ),
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registration successful! Please verify your email.')),
+      );
+    } catch (e) {
+      setState(() {
+        _isUploading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registration failed. Please try again later.')),
+      );
     }
-
-    await FirebaseFirestore.instance.collection('registrations').add({
-      'name': _nameController.text,
-      'email': _emailController.text,
-      'phone': _phoneController.text,
-      'category': _category,
-      'role': _role, // Store the role
-      'current_education_status': _educationController.text,
-      'university_name': _universityController.text,
-      'password': _passwordController.text,
-      'image_url': imageUrl,
-      'timestamp': DateTime.now(),
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Registration successful!')),
-
-    );
-
-    setState(() {
-      _isUploading = false;
-      _formKey.currentState!.reset();
-      _image = null;
-      _webImage = null;
-      _uploadedImageUrl = null;
-      _webImage?.clear();
-      _nameController.clear();
-      _emailController.clear();
-      _phoneController.clear();
-      _educationController.clear();
-      _universityController.clear();
-      _passwordController.clear();
-      _retypePasswordController.clear();
-
-
-
-    });
-
-
   }
 
   Widget _buildImagePreview() {
@@ -206,7 +237,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 SizedBox(height: 16),
                 _buildTextField('Phone', _phoneController),
                 SizedBox(height: 16),
-                // Category Dropdown
                 DropdownButtonFormField<String>(
                   value: _category,
                   items: [
@@ -227,7 +257,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 SizedBox(height: 16),
                 _buildTextField('University Name', _universityController),
                 SizedBox(height: 16),
-                // Password Field with Visibility Toggle
                 _buildPasswordField('Password', _passwordController),
                 SizedBox(height: 16),
                 _buildPasswordField('Retype Password', _retypePasswordController),
@@ -246,13 +275,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                 ),
                 SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _isUploading ? null : _submitForm,
-                    child: _isUploading
-                        ? CircularProgressIndicator(color: Colors.white)
-                        : Text('Register'),
+                _isUploading
+                    ? Center(child: CircularProgressIndicator())
+                    : ElevatedButton(
+                  onPressed: _submitForm,
+                  child: Text('Register'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.teal,
+                    padding: EdgeInsets.symmetric(vertical: 16),
                   ),
                 ),
               ],
@@ -263,7 +293,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-
   Widget _buildTextField(String label, TextEditingController controller) {
     return TextFormField(
       controller: controller,
@@ -271,17 +300,22 @@ class _RegistrationPageState extends State<RegistrationPage> {
         labelText: label,
         border: OutlineInputBorder(),
       ),
-      validator: (value) =>
-      value == null || value.isEmpty ? 'Enter your $label' : null,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your $label';
+        }
+        return null;
+      },
     );
   }
 
-  Widget _buildPasswordField(String label, TextEditingController controller) {
+  Widget _buildPasswordField(
+      String label, TextEditingController controller) {
     return TextFormField(
       controller: controller,
+      obscureText: !_isPasswordVisible,
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(),
         suffixIcon: IconButton(
           icon: Icon(
             _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -292,14 +326,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
             });
           },
         ),
+        border: OutlineInputBorder(),
       ),
-      obscureText: !_isPasswordVisible,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Enter your $label';
-        } else if (value != _passwordController.text &&
-            label == 'Retype Password') {
-          return 'Passwords do not match';
+          return 'Please enter your password';
         }
         return null;
       },
