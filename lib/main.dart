@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:nex_event_app/panels/adminPanel.dart';
 import 'package:nex_event_app/panels/adminPanel.dart';
+import 'package:nex_event_app/panels/studentPanel.dart';
 
 import 'package:nex_event_app/screens/loginPage.dart';
 import 'package:nex_event_app/screens/logoScreen.dart';
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LogoSplashScreen(),
+      // home: LogoSplashScreen(),
+      home: StudentApp(),
     );
   }
 }
