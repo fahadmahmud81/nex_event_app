@@ -30,9 +30,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      title: 'NexEvent',
       debugShowCheckedModeBanner: false,
-      // home: LogoSplashScreen(),
-      home: StudentApp(),
+      home: LogoSplashScreen(),
+      // home: StudentApp(),
     );
   }
 }

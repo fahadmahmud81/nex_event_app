@@ -279,7 +279,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     ? Center(child: CircularProgressIndicator())
                     : ElevatedButton(
                   onPressed: _submitForm,
-                  child: Text('Register'),
+                  child: Container(
+                    height: 200,
+                      width: 80,
+
+                      child: Text('Register',style:TextStyle(color:Colors.white),)
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal,
                     padding: EdgeInsets.symmetric(vertical: 16),
