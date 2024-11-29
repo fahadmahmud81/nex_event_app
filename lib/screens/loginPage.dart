@@ -64,7 +64,10 @@ class _LoginPageState extends State<LoginPage> {
             userId: docId,  // Pass the user ID here
           ));
         } else if (role == 'super_admin') {
-          Get.to(() => SuperApp());
+          Get.to(() => SuperApp(userName: name,
+            userImageUrl: imageUrl,
+            userId: docId,
+          ));
         } else if (role == 'event_admin') {
           Get.to(() => AdminApp(
             userName: name,

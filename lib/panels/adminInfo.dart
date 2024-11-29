@@ -163,6 +163,7 @@ class _AdminProfileUpdateState extends State<AdminProfileUpdate> {
                   onTap: _pickImage,
                   child: CircleAvatar(
                     radius: 50,
+
                     backgroundImage: _image != null
                         ? FileImage(_image!)
                         : imageUrl != null
@@ -172,7 +173,10 @@ class _AdminProfileUpdateState extends State<AdminProfileUpdate> {
                         ? Icon(Icons.camera_alt, size: 50)
                         : null,
                   ),
+
                 ),
+                SizedBox(height: 20),
+                Text("Upload Your Organization Logo"),
                 SizedBox(height: 20),
                 TextFormField(
                   controller: organizationNameController,
