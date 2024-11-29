@@ -223,11 +223,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Register',
+                  'Register to NexEvent',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Colors.teal,
+                    color: Colors.redAccent,
                   ),
                 ),
                 SizedBox(height: 20),
@@ -278,18 +278,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 _isUploading
                     ? Center(child: CircularProgressIndicator())
                     : ElevatedButton(
-                  onPressed: _submitForm,
-                  child: Container(
-                    height: 200,
-                      width: 80,
 
-                      child: Text('Register',style:TextStyle(color:Colors.white),)
+                  onPressed: _submitForm,
+                  child: Center(
+
+
+                      child: Text('Register',style:TextStyle(color:Colors.redAccent,fontSize: 16),)
                   ),
+
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
+                    backgroundColor: Colors.black,
                     padding: EdgeInsets.symmetric(vertical: 16),
                   ),
                 ),
+                SizedBox(height: 10,)
               ],
             ),
           ),

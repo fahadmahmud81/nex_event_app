@@ -42,19 +42,46 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       final userExists = await _doesUserExistInFirestore(email);
 
       if (!userExists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('No user found with this email.')),
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error!'),
+              content: Text('No user found with this email.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
         );
       } else {
         // Send password reset email through Firebase Auth
         await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Password reset email sent! Check your inbox.')),
+        // Show success dialog
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Successful'),
+              content: Text('Password reset email sent successfully! Check your inbox.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                    Navigator.pop(context); // Optionally navigate back to login screen
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
         );
-
-        // Optionally navigate back to login screen
-        Navigator.pop(context);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -66,6 +93,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

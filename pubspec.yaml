@@ -47,8 +47,16 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  flutter_launcher_icons: ^0.9.3 # Use the latest version
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/nexaevent.png" # Path to your custom logo
+
+flutter_test:
+  sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

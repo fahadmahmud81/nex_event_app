@@ -3,11 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:nex_event_app/screens/splashscreen.dart';
-import 'forgotPassword.dart'; // Ensure this page is implemented
+import 'forgotPassword.dart';
 import 'package:nex_event_app/panels/adminPanel.dart';
 import 'package:nex_event_app/panels/studentPanel.dart';
 import 'package:nex_event_app/panels/superAdmin.dart';
-
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _isPasswordVisible = false; // Toggle password visibility
+  bool _isPasswordVisible = false;
   bool _isLoading = false;
 
   Future<void> _loginAndSyncPassword() async {
@@ -36,38 +35,66 @@ class _LoginPageState extends State<LoginPage> {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
 
-      // Update Firestore with the new password
+      // Fetch user details
       final querySnapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('email', isEqualTo: email)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        final docId = querySnapshot.docs.first.id;
+        final userDoc = querySnapshot.docs.first;
+        final docId = userDoc.id;
+
+        // Sync password in Firestore
         await FirebaseFirestore.instance
             .collection('users')
             .doc(docId)
-            .update({'password': password}); // Sync password
+            .update({'password': password});
+
+        // Extract user details
+        String role = userDoc['role'];
+        String name = userDoc['name'];
+        String imageUrl = userDoc['imageUrl'];
+
+        // Navigate to respective panel
+        if (role == 'student') {
+          Get.to(() => StudentApp(
+            userName: name,
+            userImageUrl: imageUrl,
+            userId: docId,  // Pass the user ID here
+          ));
+        } else if (role == 'super_admin') {
+          Get.to(() => SuperApp());
+        } else if (role == 'event_admin') {
+          Get.to(() => AdminApp(
+            userName: name,
+            userImageUrl: imageUrl,
+            userId: docId,
+          ));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Unknown role assigned.')),
+          );
+        }
       }
 
-      // Determine the user role and navigate
-      final userDoc = querySnapshot.docs.first;
-      String role = userDoc['role'];
-
-      if (role == 'student') {
-        Get.to(() => StudentApp());
-      } else if (role == 'super_admin') {
-        Get.to(() => SuperApp());
-      } else if (role == 'event_admin') {
-        Get.to(() => AdminApp());
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Unknown role assigned.')),
-        );
-      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed. Check your credentials.')),
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Login Failed'),
+            content: Text('Check your credentials and try again.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
       );
     } finally {
       setState(() {
@@ -85,6 +112,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -166,17 +194,18 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(height: 20),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [ Text("Don't have an account?"),
-                    TextButton(onPressed: (){
-                      Get.to(() => SplashScreen());
-                    }, child: Text("Register"))
-
-
+                  children: [
+                    Text("Don't have an account?"),
+                    TextButton(
+                      onPressed: () {
+                        Get.to(() => SplashScreen());
+                      },
+                      child: Text("Register"),
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),

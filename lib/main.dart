@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'NexEvent',
       debugShowCheckedModeBanner: false,
-      home: LogoSplashScreen(),
-      // home: StudentApp(),
+      // home: LogoSplashScreen(),
+      home: LoginPage(),
     );
   }
 }

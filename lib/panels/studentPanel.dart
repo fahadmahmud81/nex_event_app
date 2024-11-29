@@ -1,24 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nex_event_app/panels/stdprofile.dart';
+import 'package:nex_event_app/screens/loginPage.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 class StudentApp extends StatefulWidget {
-  const StudentApp({super.key});
+  final String userName;
+  final String userImageUrl;
+  final String userId; // Add userId to identify the logged-in user
+
+  const StudentApp({
+    Key? key,
+    required this.userName,
+    required this.userImageUrl,
+    required this.userId, // Pass userId to fetch user data
+  }) : super(key: key);
 
   @override
   _StudentAppState createState() => _StudentAppState();
 }
 
 class _StudentAppState extends State<StudentApp> {
-  String title = "Student Panel";
   int _currentIndex = 0;
+
+  // Method to handle logout
+  void _logout() async {
+    await FirebaseAuth.instance.signOut();
+    Get.offAll(() => LoginPage()); // Navigate to login and clear stack
+  }
+
+  // Show confirmation dialog before logging out
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Logout"),
+          content: Text("Are you sure you want to logout?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+                _logout(); // Perform logout
+              },
+              child: Text("Logout"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
-        title: Text(title),
-        centerTitle: true,
+        title: Text("Welcome, ${widget.userName}", style: TextStyle(fontSize: 16)),
+        automaticallyImplyLeading: false, // Disable default back button
+        titleSpacing: 20,
+
+        actions: [
+          PopupMenuButton<String>(
+            icon: CircleAvatar(
+              backgroundImage: NetworkImage(widget.userImageUrl),
+            ),
+            onSelected: (String value) {
+              if (value == "Profile") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(userId: widget.userId),
+                  ),
+                );
+              } else if (value == "Logout") {
+                _showLogoutDialog(); // Show logout confirmation dialog
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  value: "Profile",
+                  child: Text("Profile"),
+                ),
+                PopupMenuItem(
+                  value: "Logout",
+                  child: Text("Logout"),
+                ),
+              ];
+            },
+          ),
+          SizedBox(width: 15),
+        ],
       ),
       body: Center(
         child: Text(
@@ -34,31 +114,24 @@ class _StudentAppState extends State<StudentApp> {
           });
         },
         items: [
-          /// Home
           SalomonBottomBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined,size: 30,),
             title: Text("Home"),
             selectedColor: Colors.blue,
           ),
-
-          /// Search
           SalomonBottomBarItem(
-            icon: Icon(Icons.search),
-            title: Text("Search"),
+            icon: Icon(Icons.favorite_border_rounded,size: 30,),
+            title: Text("Favourites"),
             selectedColor: Colors.purple,
           ),
-
-          /// Profile
           SalomonBottomBarItem(
-            icon: Icon(Icons.person),
-            title: Text("Profile"),
+            icon: Icon(Icons.assignment_turned_in_outlined,size: 30,),
+            title: Text("Registered"),
             selectedColor: Colors.green,
           ),
-
-          /// Settings
           SalomonBottomBarItem(
-            icon: Icon(Icons.settings),
-            title: Text("Settings"),
+            icon: Icon(Icons.notifications_active_outlined,size: 30,),
+            title: Text("Notice"),
             selectedColor: Colors.orange,
           ),
         ],
@@ -66,4 +139,3 @@ class _StudentAppState extends State<StudentApp> {
     );
   }
 }
-
