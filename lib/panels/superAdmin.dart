@@ -6,6 +6,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SuperApp extends StatefulWidget {
+
   final String userName;
   final String userImageUrl;
   final String userId; // Add userId to identify the logged-in user
@@ -14,7 +15,7 @@ class SuperApp extends StatefulWidget {
     Key? key,
     required this.userName,
     required this.userImageUrl,
-    required this.userId, // Pass userId to fetch user data
+    required this.userId,
   }) : super(key: key);
 
   @override
@@ -60,6 +61,7 @@ class _SuperAppState extends State<SuperApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
 
       appBar: AppBar(

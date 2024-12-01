@@ -8,6 +8,7 @@ import 'package:nex_event_app/panels/adminPanel.dart';
 import 'package:nex_event_app/panels/studentPanel.dart';
 import 'package:nex_event_app/panels/superAdmin.dart';
 
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -114,7 +115,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text(''),
+        centerTitle: true,
         automaticallyImplyLeading: false,
       ),
       body: Padding(
@@ -125,6 +127,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+
                 Text(
                   'Welcome Back!',
                   style: TextStyle(

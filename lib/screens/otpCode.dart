@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -39,6 +40,8 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
   bool _isEmailVerified = false;
   bool _isLoading = true;
   Timer? _verificationCheckTimer;
+
+
 
   @override
   void initState() {
@@ -87,7 +90,10 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
   }
 
   void _saveUserToDatabase() async {
+
     try {
+
+
       // Save user data to Firestore users collection
       await FirebaseFirestore.instance.collection('users').add({
         'name': widget.name,
@@ -136,6 +142,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(title: Text('Email Verification')),
       body: _isLoading
@@ -195,3 +202,4 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
     );
   }
 }
+

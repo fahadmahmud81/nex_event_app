@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nex_event_app/panels/stdprofile.dart';
 import 'package:nex_event_app/screens/loginPage.dart';
 
+import 'adminEvent.dart';
 import 'adminInfo.dart';
 
 class AdminApp extends StatefulWidget {
@@ -25,7 +25,12 @@ class AdminApp extends StatefulWidget {
 class _AdminAppState extends State<AdminApp> {
   int _currentIndex = 0;
 
-  final List<String> _pages = ["Dashboard", "Events", "Notifications", "Settings"];
+  final List<Widget> _pageWidgets = [
+    EventsPage(),
+    SponsorsPage(),
+    OrganizationsPage(),
+    RegistrationInfoPage(),
+  ];
 
   // Method to handle logout
   void _logout() async {
@@ -63,112 +68,174 @@ class _AdminAppState extends State<AdminApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Welcome Admin, ${widget.userName.split(' ').first}", style: TextStyle(fontSize: 16)),
-        centerTitle: true,
-        actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.notifications_active_outlined),
+    return WillPopScope(
+      onWillPop: () async {
+        // Disable the back button functionality
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Welcome Admin, ${widget.userName.split(' ').first}",
+            style: TextStyle(fontSize: 16),
           ),
-          SizedBox(width: 10,)
-
-        ],
-
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: widget.userImageUrl.isNotEmpty
-                        ? NetworkImage(widget.userImageUrl)
-                        : AssetImage('assets/default_image.png') as ImageProvider,
-                    radius: 30,
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    widget.userName,
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  Text(
-                    "Admin",
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.dashboard),
-              title: Text("Dashboard"),
-              onTap: () {
-                setState(() {
-                  _currentIndex = 0;
-                });
-                Navigator.pop(context);
+          centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () {
+                // Placeholder for notifications functionality
               },
+              icon: Icon(Icons.notifications_active_outlined),
             ),
-            ListTile(
-              leading: Icon(Icons.event),
-              title: Text("Events"),
-              onTap: () {
-                setState(() {
-                  _currentIndex = 1;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.notifications),
-              title: Text("Notifications"),
-              onTap: () {
-                setState(() {
-                  _currentIndex = 2;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("Settings"),
-              onTap: () {
-                setState(() {
-                  _currentIndex = 3;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.edit),
-              title: Text("Update Profile"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdminProfileUpdate(userId: widget.userId, ),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("Logout"),
-              onTap: _showLogoutDialog,
-            ),
+            SizedBox(width: 10),
           ],
         ),
-      ),
-      body: Center(
-        child: Text(
-          "Current Page: ${_pages[_currentIndex]}",
-          style: TextStyle(fontSize: 24),
+
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(color: Colors.blue),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: widget.userImageUrl.isNotEmpty
+                          ? NetworkImage(widget.userImageUrl)
+                          : AssetImage('assets/default_image.png') as ImageProvider,
+                      radius: 30,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      widget.userName,
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    Text(
+                      "Admin",
+                      style: TextStyle(color: Colors.white70, fontSize: 16),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.event_note_sharp),
+                title: Text("Events"),
+                selected: _currentIndex == 0,
+                selectedTileColor: Colors.black12, // Optional: highlight color
+                onTap: () {
+                  setState(() {
+                    _currentIndex = 0;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.attach_money),
+                title: Text("Sponsors"),
+                selected: _currentIndex == 1,
+                selectedTileColor: Colors.black12,  // Optional: highlight color
+                onTap: () {
+                  setState(() {
+                    _currentIndex = 1;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.school),
+                title: Text("Organizations"),
+                selected: _currentIndex == 2,
+                  selectedTileColor: Colors.black12,  // Optional: highlight color
+                onTap: () {
+                  setState(() {
+                    _currentIndex = 2;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.how_to_reg_rounded),
+                title: Text("Reg. Info"),
+                selected: _currentIndex == 3,
+                selectedTileColor: Colors.black12, // Optional: highlight color
+                onTap: () {
+                  setState(() {
+                    _currentIndex = 3;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.edit),
+                title: Text("Update Profile"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AdminProfileUpdate(userId: widget.userId),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: Text("Logout"),
+                onTap: _showLogoutDialog,
+              ),
+            ],
+          ),
         ),
+
+
+
+        body: _pageWidgets[_currentIndex],
       ),
     );
   }
 }
+
+// Events Page
+
+
+// Sponsors Page
+class SponsorsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "Sponsors Page",
+        style: TextStyle(fontSize: 24),
+      ),
+    );
+  }
+}
+
+// Organizations Page
+class OrganizationsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "Organizations Page",
+        style: TextStyle(fontSize: 24),
+      ),
+    );
+  }
+}
+
+// Registration Info Page
+class RegistrationInfoPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "Registration Info Page",
+        style: TextStyle(fontSize: 24),
+      ),
+    );
+  }
+}
+
+
