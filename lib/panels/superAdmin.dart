@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nex_event_app/panels/stdprofile.dart';
+import 'package:nex_event_app/panels/super/Notice.dart';
+import 'package:nex_event_app/panels/super/access.dart';
+import 'package:nex_event_app/panels/super/organization.dart';
+import 'package:nex_event_app/panels/super/sponsor.dart';
 import 'package:nex_event_app/screens/loginPage.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,6 +28,13 @@ class SuperApp extends StatefulWidget {
 
 class _SuperAppState extends State<SuperApp> {
   int _currentIndex = 0;
+
+  final List<Widget> _pages = [
+    AccessPage(),
+    OrganizationPage(),
+    SponsorPage(),
+    NoticePage(),
+  ];
 
   // Method to handle logout
   void _logout() async {
@@ -61,14 +72,11 @@ class _SuperAppState extends State<SuperApp> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
       appBar: AppBar(
         title: Text("Super Admin Panel", style: TextStyle(fontSize: 16)),
         automaticallyImplyLeading: false, // Disable default back button
         titleSpacing: 20,
-
         actions: [
           PopupMenuButton<String>(
             icon: CircleAvatar(
@@ -88,10 +96,6 @@ class _SuperAppState extends State<SuperApp> {
             },
             itemBuilder: (BuildContext context) {
               return [
-                // PopupMenuItem(
-                //   value: "Profile",
-                //   child: Text("Profile"),
-                // ),
                 PopupMenuItem(
                   value: "Logout",
                   child: Text("Logout"),
@@ -102,12 +106,7 @@ class _SuperAppState extends State<SuperApp> {
           SizedBox(width: 15),
         ],
       ),
-      body: Center(
-        child: Text(
-          "Page ${_currentIndex + 1}",
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
+      body: _pages[_currentIndex], // Display the selected page
       bottomNavigationBar: SalomonBottomBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -117,30 +116,36 @@ class _SuperAppState extends State<SuperApp> {
         },
         items: [
           SalomonBottomBarItem(
-            icon: Icon(Icons.verified_user_outlined,size: 30,),
+            icon: Icon(Icons.verified_user_outlined, size: 30),
             title: Text("Access"),
             selectedColor: Colors.blue,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.school_outlined,size: 30,),
+            icon: Icon(Icons.school_outlined, size: 30),
             title: Text("Organization"),
             selectedColor: Colors.orange,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.monetization_on_outlined,size: 30,),
+            icon: Icon(Icons.monetization_on_outlined, size: 30),
             title: Text("Sponsor"),
             selectedColor: Colors.purple,
           ),
-
-
           SalomonBottomBarItem(
-            icon: Icon(Icons.tips_and_updates_outlined,size: 30,),
+            icon: Icon(Icons.tips_and_updates_outlined, size: 30),
             title: Text("Notice"),
             selectedColor: Colors.green,
           ),
-
         ],
       ),
     );
   }
 }
+
+
+
+
+
+
+
+
+

@@ -10,12 +10,14 @@ class AdminApp extends StatefulWidget {
   final String userName;
   final String userImageUrl;
   final String userId;
+  final String userEmail;
 
   const AdminApp({
     Key? key,
     required this.userName,
     required this.userImageUrl,
     required this.userId,
+    required this.userEmail,
   }) : super(key: key);
 
   @override
@@ -174,7 +176,7 @@ class _AdminAppState extends State<AdminApp> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AdminProfileUpdate(userId: widget.userId),
+                      builder: (context) => AdminProfileUpdate(userId: widget.userId, userEmail: widget.userEmail,),
                     ),
                   );
                 },

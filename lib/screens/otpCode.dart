@@ -103,7 +103,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
         'role': widget.role,
         'education': widget.education,
         'university': widget.university,
-        'password': widget.password, // Ensure secure storage in production
+        // 'password': widget.password, // Ensure secure storage in production
         'imageUrl': widget.imageUrl,
         'emailVerified': true,
       });

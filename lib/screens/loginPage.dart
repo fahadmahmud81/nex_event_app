@@ -47,10 +47,10 @@ class _LoginPageState extends State<LoginPage> {
         final docId = userDoc.id;
 
         // Sync password in Firestore
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(docId)
-            .update({'password': password});
+        // await FirebaseFirestore.instance
+        //     .collection('users')
+        //     .doc(docId)
+        //     .update({'password': password});
 
         // Extract user details
         String role = userDoc['role'];
@@ -73,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
           Get.to(() => AdminApp(
             userName: name,
             userImageUrl: imageUrl,
-            userId: docId,
+            userId: docId, userEmail: email,
           ));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

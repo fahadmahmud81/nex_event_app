@@ -1,4 +1,5 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,49 +10,124 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:nex_event_app/panels/updateEvent.dart';
+
+//admin Home EventsPage ,fms, and Create Event Logic is here
+
+
+
 class EventsPage extends StatefulWidget {
   @override
   _EventsPageState createState() => _EventsPageState();
 }
 
 class _EventsPageState extends State<EventsPage> {
-  // Sample data for events (this can be fetched from Firebase or any backend)
-  List<Map<String, String>> events = [
-    {
-      'name': 'Tech Talk 2024',
-      'date': '2024-12-10',
-      'description': 'A session on the latest trends in technology.',
-    },
-    {
-      'name': 'Flutter Workshop',
-      'date': '2024-12-15',
-      'description': 'A hands-on workshop on Flutter development.',
-    },
-    // Add more events here
-  ];
+  final CollectionReference eventsCollection =
+  FirebaseFirestore.instance.collection('events');
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  String? currentUserEmail;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCurrentUser();
+  }
+
+  Future<void> _fetchCurrentUser() async {
+    final User? user = auth.currentUser;
+    if (user != null) {
+      setState(() {
+        currentUserEmail = user.email;
+      });
+    }
+    _deleteExpiredEvents();
+  }
+
+  Future<void> _deleteExpiredEvents() async {
+    if (currentUserEmail == null) return;
+
+    final now = Timestamp.now();
+    final querySnapshot = await eventsCollection
+        .where('adminEmail', isEqualTo: currentUserEmail)
+        .where('registrationDeadline', isLessThan: now)
+        .get();
+
+    for (var doc in querySnapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
+
+  Future<void> _deleteEvent(String id) async {
+    await eventsCollection.doc(id).delete();
+    Get.snackbar("Success", "Event deleted successfully",
+        snackPosition: SnackPosition.TOP);
+  }
+
+  void _updateEvent(Map<String, dynamic> eventData, String docId) {
+    Get.to(() => UpdateEvent(eventID: docId), arguments: {
+      'eventData': eventData,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: events.length,
-        itemBuilder: (context, index) {
-          return Card(
-            margin: EdgeInsets.all(10),
-            child: ListTile(
-              contentPadding: EdgeInsets.all(10),
-              title: Text(
-                events[index]['name']!,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                'Date: ${events[index]['date']}\nDescription: ${events[index]['description']}',
-                style: TextStyle(fontSize: 14),
-              ),
-              onTap: () {
-                // Handle event tap (e.g., show event details or manage event)
-              },
-            ),
+      body: currentUserEmail == null
+          ? Center(child: CircularProgressIndicator())
+          : StreamBuilder<QuerySnapshot>(
+        stream: eventsCollection
+            .where('adminEmail', isEqualTo: currentUserEmail)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('No events available.'));
+          }
+          final events = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: events.length,
+            itemBuilder: (context, index) {
+              final event = events[index].data() as Map<String, dynamic>;
+              final docId = events[index].id;
+
+              return Card(
+                margin: EdgeInsets.all(10),
+                child: ListTile(
+                  contentPadding: EdgeInsets.all(10),
+                  title: Text(
+                    event['eventTitle'] ?? 'No Title',
+                    style: TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                    'Organization: ${event['organizationName'] ?? 'Unknown'}\n'
+                        'Category: ${event['eventCategory'] ?? 'None'}\n'
+                        'Deadline: ${(event['registrationDeadline'] as Timestamp).toDate()}',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () {
+                          _updateEvent(event, docId);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          _deleteEvent(docId);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           );
         },
       ),
@@ -78,7 +154,8 @@ class _CreateEventState extends State<CreateEvent> {
   final TextEditingController _deadlineController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _organizationController = TextEditingController();
-  final TextEditingController _universityShortFormController = TextEditingController();
+  final TextEditingController _universityShortFormController =
+      TextEditingController();
   DateTime? _selectedDeadline;
   String _selectedCategory = "Educational Events";
   String _selectedCoverage = "National";
@@ -159,38 +236,85 @@ class _CreateEventState extends State<CreateEvent> {
             pickedTime.hour,
             pickedTime.minute,
           );
-          _deadlineController.text = '${_selectedDeadline!.toLocal()}'; // Set the deadline input field text
+          _deadlineController.text =
+              '${_selectedDeadline!.toLocal()}'; // Set the deadline input field text
         });
       }
     }
   }
 
+  String? _organizationName; // To store the fetched organization name
+  String? _email;
 
-  // Save event data to Firebase Firestore
-  // Save event data to Firebase Firestore
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserEmailAndOrg();
+
+ // Fetch user information on initialization
+  }
+
+  Future<void> _fetchUserEmailAndOrg() async {
+    try {
+      // Get the current user's email
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final email = user.email;
+
+        setState(() {
+          _email = email; // Set the email state
+        });
+
+        // Fetch user's organization information from Firestore
+        final querySnapshot = await FirebaseFirestore.instance
+            .collection('adminorg')
+            .where('email', isEqualTo: email)
+            .get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          final data = querySnapshot.docs.first.data();
+          setState(() {
+            _organizationName = data['organizationName']; // Set organization name
+          });
+        } else {
+          setState(() {
+            _organizationName = 'Not Found';
+          });
+        }
+      }
+    } catch (e) {
+      print("Error fetching user email or organization: $e");
+    }
+  }
+
+
+
+
+
   Future<void> _addEvent() async {
     if (_formKey.currentState!.validate()) {
       // Check for duplicate events based on title, organization, and category
       final querySnapshot = await FirebaseFirestore.instance
           .collection('events')
           .where('eventTitle', isEqualTo: _titleController.text)
-          .where('organizationName', isEqualTo: _organizationController.text)
+          .where('organizationName',
+              isEqualTo: _organizationName) // Check for the organization name
           .where('eventCategory', isEqualTo: _selectedCategory)
-          .where('eventDescription', isEqualTo: _descriptionController.text)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        // If a duplicate is found
+        // Show duplicate event alert
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('Duplicate Event'),
-              content: Text('An event with this title, organization, and category already exists.'),
+              content: Text(
+                  'An event with this title and organization already exists.'),
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
+                    Navigator.of(context).pop(); // Close dialog
                   },
                   child: Text('OK'),
                 ),
@@ -199,36 +323,34 @@ class _CreateEventState extends State<CreateEvent> {
           },
         );
       } else {
-        // Upload image to imgBB and get the URL
+        // Proceed with adding the event
         if (_imageFile != null) {
           _imageUrl = await _uploadImage(_imageFile!);
         }
 
-        // Generate unique eventID
         String eventID = DateTime.now().millisecondsSinceEpoch.toString();
-
-        // Create event data
         final eventData = {
           'universityShortForm': _universityShortFormController.text.isNotEmpty
               ? _universityShortFormController.text
-              : null, // Example, you can change this
+              : null,
           'eventCategory': _selectedCategory,
           'eventCoverageArea': _selectedCoverage,
-          'adminEmail': _emailController.text,
+          'adminEmail': _email,
+          // Use the fetched email
+          'organizationName': _organizationName,
+          // Use the fetched organization name
           'eventID': eventID,
           'eventTitle': _titleController.text,
           'eventDescription': _descriptionController.text,
           'eventImage': _imageUrl,
-          'organizationName': _organizationController.text,
           'registrationDeadline': _selectedDeadline != null
               ? Timestamp.fromDate(_selectedDeadline!)
               : null,
         };
 
-        // Add event data to Firestore
         await FirebaseFirestore.instance.collection('events').add(eventData);
 
-        // Show confirmation dialog
+        // Show success dialog
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -238,8 +360,8 @@ class _CreateEventState extends State<CreateEvent> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                    Navigator.pop(context); // Optionally, go back after success
+                    Navigator.of(context).pop();
+                    Navigator.pop(context);
                   },
                   child: Text('OK'),
                 ),
@@ -250,8 +372,6 @@ class _CreateEventState extends State<CreateEvent> {
       }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -307,47 +427,11 @@ class _CreateEventState extends State<CreateEvent> {
               SizedBox(
                 height: 14,
               ),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Admin Email',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  // Check if the email is empty
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the admin email';
-                  }
-
-                  // Regular expression for validating an email
-                  String pattern =
-                      r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b';
-                  RegExp regExp = RegExp(pattern);
-
-                  // Check if the email matches the regular expression
-                  if (!regExp.hasMatch(value)) {
-                    return 'Please enter a valid email address';
-                  }
-
-                  return null;
-                },
-              ),
+              Text("Admin Email: ${_email}"),
               SizedBox(
                 height: 14,
               ),
-              TextFormField(
-                controller: _organizationController,
-                decoration: InputDecoration(
-                  labelText: 'Organization Name',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the organization name';
-                  }
-                  return null;
-                },
-              ),
+              Text("Organization Name: ${_organizationName}"),
               SizedBox(
                 height: 14,
               ),
@@ -358,18 +442,19 @@ class _CreateEventState extends State<CreateEvent> {
                   border: OutlineInputBorder(),
                 ),
               ),
-
               SizedBox(
                 height: 14,
               ),
-
               TextFormField(
                 controller: _deadlineController,
-                decoration: InputDecoration(labelText: 'Registration Deadline',
+                decoration: InputDecoration(
+                  labelText: 'Registration Deadline',
                   border: OutlineInputBorder(),
                 ),
-                readOnly: true,  // Makes the field non-editable
-                onTap: _pickDateAndTime,  // Open the date and time picker
+                readOnly: true,
+                // Makes the field non-editable
+                onTap: _pickDateAndTime,
+                // Open the date and time picker
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select the registration deadline';
@@ -377,9 +462,9 @@ class _CreateEventState extends State<CreateEvent> {
                   return null;
                 },
               ),
-
-
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               DropdownButtonFormField<String>(
                 value: _selectedCategory,
                 decoration: InputDecoration(labelText: 'Event Category'),

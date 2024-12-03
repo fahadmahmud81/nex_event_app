@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+//StudentProfile Info
+
 class ProfilePage extends StatefulWidget {
   final String userId; // The user ID passed from StudentApp
 
