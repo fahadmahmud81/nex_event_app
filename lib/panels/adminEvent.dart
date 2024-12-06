@@ -120,7 +120,34 @@ class _EventsPageState extends State<EventsPage> {
                       IconButton(
                         icon: Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
-                          _deleteEvent(docId);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Caution!'),
+                                content: Text('Are you Sure that you want to delete the event?'),
+                                actions: [
+
+                                  TextButton(
+                                    onPressed: () {
+                                      _deleteEvent(docId); // Close the dialog
+                                    },
+                                    child: Text('Yes'),
+                                  ),
+
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // Close the dialog
+                                    },
+                                    child: Text('No'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+
+
+
                         },
                       ),
                     ],

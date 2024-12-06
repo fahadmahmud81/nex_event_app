@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nex_event_app/panels/stdprofile.dart';
+import 'package:nex_event_app/panels/student/homeEvent.dart';
 import 'package:nex_event_app/screens/loginPage.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,13 +25,18 @@ class StudentApp extends StatefulWidget {
 class _StudentAppState extends State<StudentApp> {
   int _currentIndex = 0;
 
-  // Method to handle logout
   void _logout() async {
     await FirebaseAuth.instance.signOut();
     Get.offAll(() => LoginPage()); // Navigate to login and clear stack
   }
 
-  // Show confirmation dialog before logging out
+  final List<Widget> _pages = [
+    HomePage(),
+    FavouritesPage(),
+    RegisteredPage(),
+    NoticePage(),
+  ];
+
   void _showLogoutDialog() {
     showDialog(
       context: context,
@@ -61,12 +67,10 @@ class _StudentAppState extends State<StudentApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         title: Text("Welcome, ${widget.userName}", style: TextStyle(fontSize: 16)),
-        automaticallyImplyLeading: false, // Disable default back button
+        automaticallyImplyLeading: false,
         titleSpacing: 20,
-
         actions: [
           PopupMenuButton<String>(
             icon: CircleAvatar(
@@ -81,7 +85,7 @@ class _StudentAppState extends State<StudentApp> {
                   ),
                 );
               } else if (value == "Logout") {
-                _showLogoutDialog(); // Show logout confirmation dialog
+                _showLogoutDialog();
               }
             },
             itemBuilder: (BuildContext context) {
@@ -100,12 +104,7 @@ class _StudentAppState extends State<StudentApp> {
           SizedBox(width: 15),
         ],
       ),
-      body: Center(
-        child: Text(
-          "Page ${_currentIndex + 1}",
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
+      body: _pages[_currentIndex], // Display selected page
       bottomNavigationBar: SalomonBottomBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -115,26 +114,66 @@ class _StudentAppState extends State<StudentApp> {
         },
         items: [
           SalomonBottomBarItem(
-            icon: Icon(Icons.home_outlined,size: 30,),
+            icon: Icon(Icons.home_outlined, size: 30),
             title: Text("Home"),
             selectedColor: Colors.blue,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.favorite_border_rounded,size: 30,),
+            icon: Icon(Icons.favorite_border_rounded, size: 30),
             title: Text("Favourites"),
             selectedColor: Colors.purple,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.assignment_turned_in_outlined,size: 30,),
+            icon: Icon(Icons.assignment_turned_in_outlined, size: 30),
             title: Text("Registered"),
             selectedColor: Colors.green,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.notifications_active_outlined,size: 30,),
+            icon: Icon(Icons.notifications_active_outlined, size: 30),
             title: Text("Notice"),
             selectedColor: Colors.orange,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class NoticePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "Event Notices",
+        style: TextStyle(fontSize: 24),
+      ),
+    );
+  }
+}
+
+
+
+
+
+class FavouritesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "Personalized Events",
+        style: TextStyle(fontSize: 24),
+      ),
+    );
+  }
+}
+
+class RegisteredPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "Registered Events",
+        style: TextStyle(fontSize: 24),
       ),
     );
   }
