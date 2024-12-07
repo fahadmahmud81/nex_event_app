@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nex_event_app/panels/stdprofile.dart';
+import 'package:nex_event_app/panels/student/favouritePage.dart';
 import 'package:nex_event_app/panels/student/homeEvent.dart';
+import 'package:nex_event_app/panels/student/stdEventList.dart';
 import 'package:nex_event_app/screens/loginPage.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -155,26 +157,5 @@ class NoticePage extends StatelessWidget {
 
 
 
-class FavouritesPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Personalized Events",
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
 
-class RegisteredPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Registered Events",
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
+

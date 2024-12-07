@@ -84,22 +84,23 @@ class _LoginPageState extends State<LoginPage> {
 
     } catch (e) {
       showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Login Failed'),
-            content: Text('Check your credentials and try again.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Login Failed'),
+          content: Text('Check your credentials and try again.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+
     } finally {
       setState(() {
         _isLoading = false;
