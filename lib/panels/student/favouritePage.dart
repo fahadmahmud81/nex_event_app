@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nex_event_app/panels/student/personalized.dart';
+import 'package:nex_event_app/panels/student/userSpecific.dart';
 
 class FavouritesPage extends StatefulWidget {
   @override
@@ -11,7 +13,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
   String university = '';
   String userName = '';
   List<String> selectedCategories = []; // To store selected categories
-  String filterOption = 'All Events'; // Default filter option
+  String filterOption = 'My Uni'; // Default filter option
 
   // Categories to choose from
   final List<String> allCategories = [
@@ -243,7 +245,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                       print("Selected Filter: $filterOption");
                     },
                     itemBuilder: (BuildContext context) {
-                      return ['My Uni', 'Personalized', 'Mixed']
+                      return ['My Uni', 'Personalized']
                           .map((String choice) {
                         return PopupMenuItem<String>(
                           value: choice,
@@ -276,17 +278,39 @@ class _FavouritesPageState extends State<FavouritesPage> {
                   style: TextStyle(fontSize: 7), // Increased font size for visibility
                 ),
               ),
-              SizedBox(height: 20), // Space after categories
+            // Space after categories
 
               // Filtered content based on the selected option (for now, a placeholder)
               Expanded(
-                child: Center(
-                  child: Text(
-                    "Displaying events filtered by: $filterOption",
-                    style: TextStyle(fontSize: 24),
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: filterOption == 'My Uni'
+                      ? Container(
+
+
+                     child:  UserSpecificEventsPage(),
+
+                  )
+                      : filterOption == 'Personalized'
+                      ? Container(
+
+
+                    child:  PersonalizedEvent(),
+
+                  )
+
+                      : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Displaying all events",
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ],
                   ),
                 ),
               ),
+
             ],
           ),
         ),

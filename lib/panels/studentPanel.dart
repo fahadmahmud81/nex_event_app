@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nex_event_app/panels/stdprofile.dart';
+import 'package:nex_event_app/panels/student/NoticeStd.dart';
 import 'package:nex_event_app/panels/student/favouritePage.dart';
 import 'package:nex_event_app/panels/student/homeEvent.dart';
 import 'package:nex_event_app/panels/student/stdEventList.dart';
@@ -141,17 +142,6 @@ class _StudentAppState extends State<StudentApp> {
   }
 }
 
-class NoticePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Event Notices",
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
 
 
 

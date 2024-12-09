@@ -247,8 +247,39 @@ class EventDetailsPage extends StatelessWidget {
     final deadlineDateTime =
     DateFormat('MMMM d, yyyy, hh:mm a').format(deadlineTimestamp.toDate());
 
+    Future<bool> _canRegister() async {
+      final currentUserEmail = FirebaseAuth.instance.currentUser?.email;
+
+      if (currentUserEmail == null) {
+        return false;
+      }
+
+      try {
+        // Fetch current user's university
+        final userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .where('email', isEqualTo: currentUserEmail)
+            .get();
+
+        if (userDoc.docs.isEmpty) {
+          return false;
+        }
+
+        final userUniversity = userDoc.docs.first['university'];
+
+        // Check eventCoverageArea and compare universities
+        if (event['eventCoverageArea'] == 'Institute Only' &&
+            userUniversity != event['universityShortForm']) {
+          return false;
+        }
+
+        return true;
+      } catch (e) {
+        return false; // In case of an error, disallow registration
+      }
+    }
+
     void _registerForEvent(BuildContext context) async {
-      // Get current user's email
       final currentUserEmail = FirebaseAuth.instance.currentUser?.email;
 
       if (currentUserEmail == null) {
@@ -288,68 +319,32 @@ class EventDetailsPage extends StatelessWidget {
         }
 
         // If no record exists, proceed with registration
+        await FirebaseFirestore.instance.collection('eventreg').add({
+          'eventTitle': event['eventTitle'],
+          'eventDescription': event['eventDescription'],
+          'eventID': event['eventID'],
+          'eventCategory': event['eventCategory'],
+          'adminEmail': event['adminEmail'],
+          'registrationDeadline': event['registrationDeadline'],
+          'userEmail': currentUserEmail,
+          'universityShortForm': event['universityShortForm'],
+          'organizationName': event['organizationName'],
+          'registrationTime': Timestamp.now(),
+        });
+
+        // Show success message
         showDialog(
           context: context,
-          builder: (context) {
+          builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Register for Event"),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Event Title: ${event['eventTitle']}"),
-                  Text("Event ID: ${event['eventID']}"),
-                  Text("University Short Form: ${event['universityShortForm']}"),
-                  Text("Category: ${event['eventCategory']}"),
-                  Text("Organization Name: ${event['organizationName']}"),
-                  Text("Registration Deadline: $deadlineDateTime"),
-                  SizedBox(height: 10),
-                  Text("Your Email: $currentUserEmail"),
-                ],
-              ),
+              title: Text('Success'),
+              content: Text('Event Registration Successful!'),
               actions: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context), // Close dialog
-                  child: Text("Cancel"),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    // Save the registration details to Firestore
-                    await FirebaseFirestore.instance.collection('eventreg').add({
-                      'eventTitle': event['eventTitle'],
-                      'eventDescription': event['eventDescription'],
-                      'eventID': event['eventID'],
-                      'eventCategory': event['eventCategory'],
-                      'adminEmail': event['adminEmail'],
-                      'registrationDeadline': event['registrationDeadline'],
-                      'userEmail': currentUserEmail,
-                      'universityShortForm': event['universityShortForm'],
-                      'organizationName': event['organizationName'],
-                      'registrationTime': Timestamp.now(),
-                    });
-
-                    Navigator.pop(context); // Close the dialog
-
-                    // Show success message
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('Success'),
-                          content: Text('Event Registration Successful!'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(); // Close dialog
-                              },
-                              child: Text('OK'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close dialog
                   },
-                  child: Text("Confirm Registration"),
+                  child: Text('OK'),
                 ),
               ],
             );
@@ -363,78 +358,90 @@ class EventDetailsPage extends StatelessWidget {
       }
     }
 
-
     return Scaffold(
       appBar: AppBar(
         title: Text(event['eventTitle']),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Container(
-                      height: 200,
-                      width: 500,
-                      child:
-                      Image.network(event['eventImage'], fit: BoxFit.cover)),
-                ),
-              ),
-              SizedBox(height: 20),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Title: ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+      body: FutureBuilder<bool>(
+        future: _canRegister(),
+        builder: (context, snapshot) {
+          final canRegister = snapshot.data ?? false;
+
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                          height: 200,
+                          width: 500,
+                          child: Image.network(event['eventImage'],
+                              fit: BoxFit.cover)),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Title: ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '${event['eventTitle']}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Text('Description:',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(event['eventDescription']),
+                  Divider(),
+                  Text('Org: ${event['organizationName']}'),
+                  Text('Category: ${event['eventCategory']}'),
+                  Text('Area: ${event['eventCoverageArea']}'),
+                  Text('University: ${event['universityShortForm']}'),
+                  SizedBox(height: 20),
+                  Divider(),
+                  Text('Registration Deadline:',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(deadlineDateTime),
+                  SizedBox(height: 30),
+                  Container(
+                    height: 35,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: canRegister
+                          ? () => _registerForEvent(context)
+                          : null, // Disable if can't register
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: Size.fromHeight(40),
+                          backgroundColor:
+                          canRegister ? Colors.lightBlue : Colors.grey),
+                      child: Text(
+                        canRegister
+                            ? 'Register'
+                            : 'Not Eligible to Register',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    TextSpan(
-                      text: '${event['eventTitle']}',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400, color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 5),
-              Text('Description:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(event['eventDescription']),
-              Divider(),
-              Text('Org: ${event['organizationName']}'),
-              Text('Category: ${event['eventCategory']}'),
-              Text('Area: ${event['eventCoverageArea']}'),
-              Text('University: ${event['universityShortForm']}'),
-              SizedBox(height: 20),
-              Divider(),
-              Text('Registration Deadline:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(deadlineDateTime),
-              SizedBox(height: 30),
-              Container(
-                height: 35,
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => _registerForEvent(context),
-                  style: ElevatedButton.styleFrom(
-                      minimumSize: Size.fromHeight(40),
-                      backgroundColor: Colors.lightBlue),
-                  child: Text(
-                    'Register',
-                    style: TextStyle(color: Colors.white),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
