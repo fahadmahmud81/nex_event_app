@@ -192,7 +192,7 @@ class _AdminProfileUpdateState extends State<AdminProfileUpdate> {
                   value!.isEmpty ? 'Please enter contact number' : null,
                 ),
                 SizedBox(height: 10),
-                Text("User Email: ${widget.userEmail}"),
+                Text("Admin Email: ${widget.userEmail}"),
                 SizedBox(height: 10),
                 TextFormField(
                   controller: designationController,

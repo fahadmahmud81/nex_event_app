@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nex_event_app/panels/AdminRegInfo.dart';
+import 'package:nex_event_app/panels/adminOrg.dart';
+import 'package:nex_event_app/panels/adminSponsor.dart';
 import 'package:nex_event_app/screens/loginPage.dart';
 
 import 'adminEvent.dart';
@@ -201,43 +204,11 @@ class _AdminAppState extends State<AdminApp> {
 // Events Page
 
 
-// Sponsors Page
-class SponsorsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Sponsors Page",
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
 
-// Organizations Page
-class OrganizationsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Organizations Page",
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
 
-// Registration Info Page
-class RegistrationInfoPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Registration Info Page",
-        style: TextStyle(fontSize: 24),
-      ),
-    );
-  }
-}
+
+
+
+
 
 

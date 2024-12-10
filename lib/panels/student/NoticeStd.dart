@@ -173,7 +173,7 @@ class NoticePage extends StatelessWidget {
     );
   }
 
-  void _showNoticeDetails(BuildContext context, String title, String? description) {
+  void _showNoticeDetails (BuildContext context, String title, String? description) {
     showDialog(
       context: context,
       builder: (context) {
