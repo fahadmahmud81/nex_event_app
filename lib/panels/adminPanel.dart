@@ -80,9 +80,11 @@ class _AdminAppState extends State<AdminApp> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.blue,
           title: Text(
+
             "Welcome Admin, ${widget.userName.split(' ').first}",
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 16,color: Colors.white),
           ),
           centerTitle: true,
           actions: [

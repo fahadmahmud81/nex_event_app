@@ -72,6 +72,7 @@ class _StudentAppState extends State<StudentApp> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Welcome, ${widget.userName}", style: TextStyle(fontSize: 16)),
+        backgroundColor: Colors.grey[100],
         automaticallyImplyLeading: false,
         titleSpacing: 20,
         actions: [

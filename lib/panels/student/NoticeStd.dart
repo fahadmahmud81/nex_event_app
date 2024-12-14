@@ -1,44 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:marquee/marquee.dart';
 
 class NoticePage extends StatelessWidget {
   final String contactEmail = "inspiretech.bdu@gmail.com";
 
   @override
   Widget build(BuildContext context) {
+    void _launchURL() async {
+      final Uri url = Uri.parse('https://club-master-cc804.web.app/');
+      if (!await launchUrl(url)) {
+        throw 'Could not launch $url';
+      }
+    }
+    void _launchEmail() async {
+      final Uri emailUri = Uri(
+        scheme: 'mailto',
+        path: 'inspiretech.bdu@gmail.com', // Replace with the recipient's email
+        query: 'subject=NexEvent&body=Describe Your Queries Here.', // Replace with your email content
+      );
+
+      if (!await launchUrl(emailUri)) {
+        throw 'Could not launch $emailUri';
+      }
+    }
+
     return Scaffold(
       body: Column(
         children: [
           // Marquee at the top
-          GestureDetector(
-            onTap: () async {
-              final Uri emailLaunchUri = Uri(
-                scheme: 'mailto',
-                path: contactEmail,
-              );
-
-              try {
-                if (await canLaunchUrl(emailLaunchUri)) {
-                  await launchUrl(emailLaunchUri);
-                } else {
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   SnackBar(
-                  //     content: Text("No email app found."),
-                  //   ),
-                  // );
-                }
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Error opening email app: $e"),
-                  ),
-                );
-              }
-            },
+          TextButton(
+           onPressed: (){
+             _launchEmail();
+           },
             child: Container(
+              width: double.infinity,
               color: Colors.blueAccent,
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+              padding: EdgeInsets.symmetric(vertical: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -46,15 +45,18 @@ class NoticePage extends StatelessWidget {
                   SizedBox(width: 8),
                   Text(
                     "Contact: $contactEmail",
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
           ),
+
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('notice').snapshots(),
+              stream:
+                  FirebaseFirestore.instance.collection('notice').snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Center(child: CircularProgressIndicator());
@@ -70,14 +72,15 @@ class NoticePage extends StatelessWidget {
                     .toList();
 
                 return ListView(
-                  children: [
+                  children: <Widget>[
                     // Priority Notices
                     if (superAdminNotices.isNotEmpty) ...[
                       Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Text(
                           "Priority Notices",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
                       ...superAdminNotices.map((doc) {
@@ -90,11 +93,13 @@ class NoticePage extends StatelessWidget {
                         padding: EdgeInsets.all(16.0),
                         child: Text(
                           "Regular Notices",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
                       ...regularNotices.map((doc) {
-                        return _buildNoticeCard(context, doc, isPriority: false);
+                        return _buildNoticeCard(context, doc,
+                            isPriority: false);
                       }).toList(),
                     ],
                     // Ads Section
@@ -120,6 +125,47 @@ class NoticePage extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SizedBox(height: 20,),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Checkout Our Recent Project:",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                _launchURL();
+                              },
+                              child: Text(
+                                "ClubSync",
+                                style: TextStyle(fontSize: 16),
+                              )),
+                          // SizedBox(height: 30,),
+                          // Text("Today's Update:"),
+                          // SizedBox(
+                          //   height: 30, // Height of the marquee widget
+                          //   child: Marquee(
+                          //     text: 'This is a scrolling marquee text. Add any long content here!',
+                          //     style: const TextStyle(fontSize: 14, color: Colors.black),
+                          //     scrollAxis: Axis.horizontal, // Scroll horizontally
+                          //     crossAxisAlignment: CrossAxisAlignment.center,
+                          //     blankSpace: 20.0, // Space between repetitions
+                          //     velocity: 100.0, // Speed of the marquee
+                          //     pauseAfterRound: Duration(seconds: 1), // Pause after each scroll round
+                          //     startPadding: 10.0, // Padding before starting the scroll
+                          //     accelerationDuration: Duration(seconds: 1), // Acceleration time
+                          //     accelerationCurve: Curves.linear, // Acceleration curve
+                          //     decelerationDuration: Duration(milliseconds: 500), // Deceleration time
+                          //     decelerationCurve: Curves.easeOut, // Deceleration curve
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ),
                   ],
                 );
               },
@@ -130,7 +176,8 @@ class NoticePage extends StatelessWidget {
     );
   }
 
-  Widget _buildNoticeCard(BuildContext context, DocumentSnapshot doc, {bool isPriority = false}) {
+  Widget _buildNoticeCard(BuildContext context, DocumentSnapshot doc,
+      {bool isPriority = false}) {
     final title = doc['Title'] ?? "No Title";
     final date = doc['Date'] ?? "No Date";
     final bgColor = isPriority ? Colors.blue[100] : Colors.white;
@@ -173,7 +220,8 @@ class NoticePage extends StatelessWidget {
     );
   }
 
-  void _showNoticeDetails (BuildContext context, String title, String? description) {
+  void _showNoticeDetails(
+      BuildContext context, String title, String? description) {
     showDialog(
       context: context,
       builder: (context) {

@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart'; // For kIsWeb
+import 'package:flutter/foundation.dart';
 import 'package:file_picker/file_picker.dart';
 
 import 'otpCode.dart'; // For web file picker
@@ -220,16 +220,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
         fit: BoxFit.cover,
       );
     } else {
-      return Center(child: Text('No image selected'));
+      return Center(child: Text('Click here to select Image!'));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Registration')),
+      appBar: AppBar(title: Text('')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -237,39 +237,131 @@ class _RegistrationPageState extends State<RegistrationPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Register to NexEvent',
+                  'Create Account',
                   style: TextStyle(
                     fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.redAccent,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.blue,
                   ),
                 ),
+                Text('Sign up to continue',style: TextStyle(fontSize: 15),),
                 SizedBox(height: 20),
-                _buildTextField('Name', _nameController),
+
+// Name
+                TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.perm_contact_cal_outlined),
+                    labelText: 'Name',
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter your name';
+                    }
+                    if (value.length < 3) {
+                      return 'Name must be at least 3 characters long';
+                    }
+                    return null;
+                  },
+                ),
                 SizedBox(height: 16),
-                _buildTextField('Email', _emailController),
+
+// Email
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.email_outlined),
+                    labelText: 'Email',
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter your email';
+                    }
+                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(value)) {
+                      return 'Enter a valid email';
+                    }
+                    return null;
+                  },
+                ),
                 SizedBox(height: 16),
-                _buildTextField('Phone', _phoneController),
+
+// Phone
+                TextFormField(
+                  controller: _phoneController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.phone),
+                    labelText: 'Phone',
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter your phone number';
+                    }
+                    if (!RegExp(r'^(?:\+88)?01[3-9]\d{8}$').hasMatch(value)) {
+                      return 'Enter a valid Bangladeshi phone number';
+                    }
+                    return null;
+                  },
+                ),
                 SizedBox(height: 16),
+
                 DropdownButtonFormField<String>(
                   value: _category,
                   items: [
-                    DropdownMenuItem(value: 'general', child: Text('General')),
-                    DropdownMenuItem(value: 'admin', child: Text('Admin')),
-                    DropdownMenuItem(value: 'sponsor', child: Text('Sponsor')),
+                    DropdownMenuItem(value: 'general', child: Text('General',style: TextStyle(fontWeight: FontWeight.bold),)),
+                    DropdownMenuItem(value: 'admin', child: Text('Admin',style: TextStyle(fontWeight: FontWeight.bold))),
+                    DropdownMenuItem(value: 'sponsor', child: Text('Sponsor',style: TextStyle(fontWeight: FontWeight.bold))),
+
                   ],
                   onChanged: (value) => setState(() => _category = value),
                   decoration: InputDecoration(
                     labelText: 'Category',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
                   ),
                   validator: (value) =>
                   value == null ? 'Please select a category' : null,
                 ),
                 SizedBox(height: 16),
-                _buildTextField('Current Educational Status', _educationController),
+
+// Current Educational Status
+                TextFormField(
+                  controller: _educationController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.co_present),
+                    labelText: 'Current Educational Status',
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter your current educational status';
+                    }
+                    return null;
+                  },
+                ),
                 SizedBox(height: 16),
-                _buildTextField('University Name', _universityController),
+
+// University Name
+                TextFormField(
+                  controller: _universityController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.school_outlined),
+                    labelText: 'University Name',
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter your university name';
+                    }
+                    if (value.length < 3) {
+                      return 'University name must be at least 3 characters long';
+                    }
+                    return null;
+                  },
+                ),
                 SizedBox(height: 16),
                 _buildPasswordField('Password', _passwordController),
                 SizedBox(height: 16),
@@ -278,12 +370,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 InkWell(
                   onTap: _pickImage,
                   child: Container(
-                    height: 150,
+                    height: 100,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                       border: Border.all(color: Colors.teal),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: _buildImagePreview(),
                   ),
@@ -291,20 +383,29 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 SizedBox(height: 20),
                 _isUploading
                     ? Center(child: CircularProgressIndicator())
-                    : ElevatedButton(
+                    : Container(
+                  height: 45,
+                      child: ElevatedButton(
 
-                  onPressed: _submitForm,
-                  child: Center(
+                                        onPressed: _submitForm,
+                                        child: Center(
 
 
-                      child: Text('Register',style:TextStyle(color:Colors.redAccent,fontSize: 16),)
-                  ),
+                        child: Text('Register',style:TextStyle(color:Colors.white,fontSize: 18,fontWeight: FontWeight.bold),)
+                                        ),
 
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
+                                        style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      // Change this to your desired color
+                      foregroundColor: Colors.white,
+                      // Text color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            15), // Optional: Rounded corners
+                      ),
+                                        ),
+                                      ),
+                    ),
                 SizedBox(height: 10,)
               ],
             ),
@@ -319,7 +420,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(),
+        border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -336,7 +437,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
       controller: controller,
       obscureText: !_isPasswordVisible,
       decoration: InputDecoration(
+
         labelText: label,
+        prefixIcon: Icon(Icons.password_rounded),
         suffixIcon: IconButton(
           icon: Icon(
             _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -347,11 +450,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
             });
           },
         ),
-        border: OutlineInputBorder(),
+        border: OutlineInputBorder( borderRadius: BorderRadius.circular(10),),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter your password';
+          return 'Enter your password';
+        }
+        if (value.length < 6) {
+          return 'Password must be at least 6 characters long';
         }
         return null;
       },

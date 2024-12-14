@@ -74,7 +74,8 @@ class _SuperAppState extends State<SuperApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Super Admin Panel", style: TextStyle(fontSize: 16)),
+        title: Text("Super Admin Panel", style: TextStyle(fontSize: 16,color: Colors.white)),
+        backgroundColor: Colors.blue,
         automaticallyImplyLeading: false, // Disable default back button
         titleSpacing: 20,
         actions: [

@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -78,8 +76,7 @@ class _UpdateEventState extends State<UpdateEvent> {
     }
   }
 
-  // Update event
-// Update event
+
   Future<void> _updateEvent() async {
     if (_formKey.currentState!.validate()) {
       // If the image has been changed, upload it and update the image URL
@@ -90,50 +87,99 @@ class _UpdateEventState extends State<UpdateEvent> {
         _imageUrl = _eventImage ?? '';
       }
 
-      // Only update the event data if there are changes
-      final eventData = {
-        'eventTitle': _titleController.text,
-        'eventDescription': _descriptionController.text,
-        'universityShortForm': _universityShortFormController.text.isNotEmpty
-            ? _universityShortFormController.text
-            : null,
-        'eventCategory': _selectedCategory,
-        'eventCoverageArea': _selectedCoverage,
-        'eventImage': _imageUrl,
-        // Only update the deadline if a new date has been selected
-        'registrationDeadline': _selectedDeadline != null
-            ? Timestamp.fromDate(_selectedDeadline!)
-            : _eventDeadline != null
-            ? Timestamp.fromDate(_eventDeadline!)
-            : null,
-      };
+      try {
+        // Prepare the data to update in the 'events' collection
+        final eventData = {
+          'eventTitle': _titleController.text,
+          'eventDescription': _descriptionController.text,
+          'eventCategory': _selectedCategory,
+          'eventCoverageArea': _selectedCoverage,
+          'eventImage': _imageUrl,
+          'registrationDeadline': _selectedDeadline != null
+              ? Timestamp.fromDate(_selectedDeadline!)
+              : _eventDeadline != null
+              ? Timestamp.fromDate(_eventDeadline!)
+              : null,
+          'universityShortForm': _universityShortFormController.text.isNotEmpty
+              ? _universityShortFormController.text
+              : null,
+        };
 
-      await FirebaseFirestore.instance
-          .collection('events')
-          .doc(widget.eventID) // Update the specific event document
-          .update(eventData);
+        // Update the 'events' collection
+        await FirebaseFirestore.instance
+            .collection('events')
+            .doc(widget.eventID)
+            .update(eventData);
 
-      // Show success dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Success!'),
-            content: Text('Event Updated Successfully'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+        // Prepare the specific fields for the 'eventreg' collection
+        final eventRegData = {
+          'eventTitle': _titleController.text,
+          'eventDescription': _descriptionController.text,
+          'eventCategory': _selectedCategory,
+          'registrationDeadline': _selectedDeadline != null
+              ? Timestamp.fromDate(_selectedDeadline!)
+              : _eventDeadline != null
+              ? Timestamp.fromDate(_eventDeadline!)
+              : null,
+        };
+
+        // Query and update matching documents in the 'eventreg' collection
+        final querySnapshot = await FirebaseFirestore.instance
+            .collection('eventreg')
+            .where('eventID', isEqualTo: widget.eventID)
+            .get();
+
+        for (var doc in querySnapshot.docs) {
+          await doc.reference.update(eventRegData);
+        }
+
+        // Show success dialog
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Success!'),
+              content: Text('Event Updated Successfully in both collections'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.pop(context); // Navigate back after updating
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } catch (e) {
+        // Handle any errors that occur during the update
+        print("Error updating event data: $e");
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Failed to update event data. Please try again.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
+
+
+
+
+
 
 
 

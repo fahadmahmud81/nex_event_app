@@ -40,7 +40,7 @@ class _RegistrationInfoPageState extends State<RegistrationInfoPage> {
       appBar: AppBar(
         title: Text("Event Management"),
         automaticallyImplyLeading: false,
-        centerTitle: true,// Disables the back button
+        centerTitle: true,
       ),
       body: events.isEmpty
           ? Center(child: Text("No events found."))
