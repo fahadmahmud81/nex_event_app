@@ -96,7 +96,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
         return StatefulBuilder(
           builder: (BuildContext context, setState) {
             return AlertDialog(
-              title: Text("Select up to 3 Categories"),
+              title: Text("Select up to 3 Categories",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -226,48 +226,62 @@ class _FavouritesPageState extends State<FavouritesPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 10,),
               // Row with "Edit Your Choice" button and Filter PopupMenu on the right
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Button to open category selection dialog
-                  ElevatedButton(
-                    onPressed: _openCategoryDialog,
-                    child: Text("Edit Your Choice"),
-                  ),
-                  // PopupMenuButton for Filter options on the right
-                  PopupMenuButton<String>(
-                    onSelected: (String value) {
-                      setState(() {
-                        filterOption = value;
-                        selectedCategories;
-                      });
-                      print("Selected Filter: $filterOption");
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return ['My Uni', 'Personalized']
-                          .map((String choice) {
-                        return PopupMenuItem<String>(
-                          value: choice,
-                          child: Text(choice),
-                        );
-                      }).toList();
-                    },
-                    child: Row(
-                      children: [
-                        Text(
-                          'Filter',
-                          style: TextStyle(fontSize: 16, color: Colors.blue),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Button to open category selection dialog
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        // Change this to your desired color
+                        foregroundColor: Colors.white,
+                        // Text color
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              20), // Optional: Rounded corners
                         ),
-                        Icon(
-                          Icons.filter_list,
-                          size: 20,
-                          color: Colors.blue,
-                        ),
-                      ],
+                      ),
+                      onPressed: _openCategoryDialog,
+                      child: Text("Edit Your Choice",style: TextStyle(fontWeight: FontWeight.bold),),
                     ),
-                  ),
-                ],
+                    // PopupMenuButton for Filter options on the right
+                    PopupMenuButton<String>(
+                      onSelected: (String value) {
+                        setState(() {
+                          filterOption = value;
+                          selectedCategories;
+                        });
+                        print("Selected Filter: $filterOption");
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return ['My Uni', 'Personalized']
+                            .map((String choice) {
+                          return PopupMenuItem<String>(
+                            value: choice,
+                            child: Text(choice),
+                          );
+                        }).toList();
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            'Filter',
+                            style: TextStyle(fontSize: 16, color: Colors.blue,fontWeight: FontWeight.bold),
+                          ),
+                          Icon(
+                            Icons.filter_list,
+                            size: 20,
+                            color: Colors.blue,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 5), // Space after row
 

@@ -23,7 +23,7 @@ class RegisteredPage extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(height: 8,),
-          Text("Your Registered Event", style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.w500),),
+          Text("Your Registered Event", style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.w700),),
           Divider(),
 
           Expanded(child:       StreamBuilder<QuerySnapshot>(
@@ -191,7 +191,8 @@ class RegisteredPage extends StatelessWidget {
                                       );
                                     },
                                     icon: const Icon(Icons.info_outline),
-                                    label: const Text('Details',style: TextStyle(fontSize: 12),),
+                                    label: const Text('Details',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold
+                                    ),),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.blue.shade600,
                                       foregroundColor: Colors.white,

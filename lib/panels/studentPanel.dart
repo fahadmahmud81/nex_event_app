@@ -96,11 +96,11 @@ class _StudentAppState extends State<StudentApp> {
               return [
                 PopupMenuItem(
                   value: "Profile",
-                  child: Text("Profile"),
+                  child: Text("Profile",style: TextStyle(fontWeight: FontWeight.bold),),
                 ),
                 PopupMenuItem(
                   value: "Logout",
-                  child: Text("Logout"),
+                  child: Text("Logout",style: TextStyle(fontWeight: FontWeight.bold),),
                 ),
               ];
             },

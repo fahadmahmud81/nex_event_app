@@ -373,9 +373,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     height: 150,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      border: Border.all(color: Colors.teal),
-                      borderRadius: BorderRadius.circular(20),
+                        color: Colors.blue[50],
+                        borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.grey),
                     ),
                     child: _buildImagePreview(),
                   ),

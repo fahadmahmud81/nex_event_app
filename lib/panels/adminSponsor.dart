@@ -34,7 +34,7 @@ class _SponsorsPageState extends State<SponsorsPage> {
                 decoration: InputDecoration(
                   labelText: 'Search Sponsors by Name or Interest',
                   prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
                 ),
               ),
             ),

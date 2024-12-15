@@ -23,7 +23,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(org['name'] ?? 'Organization',style: TextStyle(fontSize: 18),),
+          title: Text(org['name'] ?? 'Organization',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +62,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
               decoration: InputDecoration(
                 labelText: 'Search Organizations',
                 prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
               ),
             ),
           ),
@@ -124,7 +124,7 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
                                     Text(
                                       org['name'] ?? '',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),

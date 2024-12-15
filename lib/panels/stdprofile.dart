@@ -211,10 +211,20 @@ class _ProfilePageState extends State<ProfilePage> {
               controller: _phoneController,
               decoration: InputDecoration(labelText: 'Phone'),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                // Change this to your desired color
+                foregroundColor: Colors.white,
+                // Text color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      20), // Optional: Rounded corners
+                ),
+              ),
               onPressed: _updateUserData,
-              child: Text('Update Profile'),
+              child: Text('Update Profile',style: TextStyle(fontWeight: FontWeight.bold),),
             ),
           ],
         ),

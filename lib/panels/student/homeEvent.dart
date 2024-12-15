@@ -80,6 +80,7 @@ class _HomePageState extends State<HomePage> {
                             color: selectedCategory == categories[index]
                                 ? Colors.white
                                 : Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         backgroundColor: selectedCategory == categories[index]
@@ -209,7 +210,21 @@ class _HomePageState extends State<HomePage> {
                                         Text('Deadline: $deadlineDate'),
                                         Text('Org: ${event['organizationName']}'),
                                         Text('Area: ${event['eventCoverageArea']}'),
-                                        Text('University: ${event['universityShortForm']}'),
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: 'University: ', // Text before the colon
+                                                style: TextStyle(fontWeight: FontWeight.normal),
+                                              ),
+                                              TextSpan(
+                                                text: event['universityShortForm'], // Text after the colon
+                                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+
                                       ],
                                     ),
                                   ),

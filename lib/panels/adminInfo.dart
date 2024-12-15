@@ -200,10 +200,20 @@ class _AdminProfileUpdateState extends State<AdminProfileUpdate> {
                   validator: (value) =>
                   value!.isEmpty ? 'Please enter designation' : null,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 40),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    // Change this to your desired color
+                    foregroundColor: Colors.white,
+                    // Text color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          20), // Optional: Rounded corners
+                    ),
+                  ),
                   onPressed: _updateUserProfile,
-                  child: Text('Update Profile'),
+                  child: Text('Update Profile',style: TextStyle(fontWeight: FontWeight.bold),),
                 ),
               ],
             ),

@@ -152,7 +152,7 @@ class UserListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(event['eventTitle'] ?? "Event Details"),
+        title: Text(event['eventTitle'] ?? "Event Details",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _getEventUsers(event['eventID'] ?? ''),

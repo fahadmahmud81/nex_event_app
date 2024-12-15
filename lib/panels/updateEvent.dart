@@ -110,28 +110,28 @@ class _UpdateEventState extends State<UpdateEvent> {
             .collection('events')
             .doc(widget.eventID)
             .update(eventData);
-
-        // Prepare the specific fields for the 'eventreg' collection
-        final eventRegData = {
-          'eventTitle': _titleController.text,
-          'eventDescription': _descriptionController.text,
-          'eventCategory': _selectedCategory,
-          'registrationDeadline': _selectedDeadline != null
-              ? Timestamp.fromDate(_selectedDeadline!)
-              : _eventDeadline != null
-              ? Timestamp.fromDate(_eventDeadline!)
-              : null,
-        };
-
-        // Query and update matching documents in the 'eventreg' collection
-        final querySnapshot = await FirebaseFirestore.instance
-            .collection('eventreg')
-            .where('eventID', isEqualTo: widget.eventID)
-            .get();
-
-        for (var doc in querySnapshot.docs) {
-          await doc.reference.update(eventRegData);
-        }
+        //
+        // // Prepare the specific fields for the 'eventreg' collection
+        // final eventRegData = {
+        //   'eventTitle': _titleController.text,
+        //   'eventDescription': _descriptionController.text,
+        //   'eventCategory': _selectedCategory,
+        //   'registrationDeadline': _selectedDeadline != null
+        //       ? Timestamp.fromDate(_selectedDeadline!)
+        //       : _eventDeadline != null
+        //       ? Timestamp.fromDate(_eventDeadline!)
+        //       : null,
+        // };
+        //
+        // // Query and update matching documents in the 'eventreg' collection
+        // final querySnapshot = await FirebaseFirestore.instance
+        //     .collection('eventreg')
+        //     .where('eventID', isEqualTo: widget.eventID)
+        //     .get();
+        //
+        // for (var doc in querySnapshot.docs) {
+        //   await doc.reference.update(eventRegData);
+        // }
 
         // Show success dialog
         showDialog(
@@ -276,8 +276,9 @@ class _UpdateEventState extends State<UpdateEvent> {
               TextFormField(
                 controller: _titleController,
                 decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.text_fields),
                   labelText: 'Event Title',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -290,8 +291,9 @@ class _UpdateEventState extends State<UpdateEvent> {
               TextFormField(
                 controller: _descriptionController,
                 decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.textsms_outlined),
                   labelText: 'Event Description',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -299,7 +301,7 @@ class _UpdateEventState extends State<UpdateEvent> {
                   }
                   return null;
                 },
-                maxLines: 5,
+                maxLines: 4,
                 keyboardType: TextInputType.multiline,
                 textInputAction: TextInputAction.newline,
               ),
@@ -307,16 +309,18 @@ class _UpdateEventState extends State<UpdateEvent> {
               TextFormField(
                 controller: _universityShortFormController,
                 decoration: InputDecoration(
-                  labelText: 'University ShortForm (Optional)',
-                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.school_outlined),
+                  labelText: 'University ShortForm',
+                  border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
                 ),
               ),
               SizedBox(height: 14),
               TextFormField(
                 controller: _deadlineController,
                 decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.lock_clock),
                   labelText: 'Registration Deadline',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
                 ),
                 readOnly: true,
                 onTap: _pickDateAndTime,
@@ -394,13 +398,19 @@ class _UpdateEventState extends State<UpdateEvent> {
                     ? Image.network(
                   _eventImage!,
                   height: 150,
+
                   width: double.infinity,
                   fit: BoxFit.cover,
                 )
                     : Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue[50],
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey),
+                  ),
                   height: 150,
                   width: double.infinity,
-                  color: Colors.grey[300],
+
                   child: Icon(
                     Icons.image,
                     size: 50,
@@ -409,10 +419,20 @@ class _UpdateEventState extends State<UpdateEvent> {
               ),
 
 
-              SizedBox(height: 14),
+              SizedBox(height: 25),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  // Change this to your desired color
+                  foregroundColor: Colors.white,
+                  // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        20), // Optional: Rounded corners
+                  ),
+                ),
                 onPressed: _updateEvent,
-                child: Text('Update Event'),
+                child: Text('Update Event',style: TextStyle(fontWeight: FontWeight.bold),),
               ),
             ],
           ),

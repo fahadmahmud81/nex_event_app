@@ -80,6 +80,9 @@ class _AdminAppState extends State<AdminApp> {
       },
       child: Scaffold(
         appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.white, // Change the color of the 3-line menu icon
+          ),
           backgroundColor: Colors.blue,
           title: Text(
 
@@ -92,7 +95,11 @@ class _AdminAppState extends State<AdminApp> {
               onPressed: () {
                 // Placeholder for notifications functionality
               },
-              icon: Icon(Icons.notifications_active_outlined),
+              icon: Icon(
+                  Icons.notifications_active_outlined,
+
+
+              ),
             ),
             SizedBox(width: 10),
           ],

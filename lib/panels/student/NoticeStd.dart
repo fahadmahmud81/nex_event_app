@@ -76,7 +76,7 @@ class NoticePage extends StatelessWidget {
                     // Priority Notices
                     if (superAdminNotices.isNotEmpty) ...[
                       Padding(
-                        padding: EdgeInsets.all(16.0),
+                        padding: EdgeInsets.symmetric(vertical: 8,horizontal: 16),
                         child: Text(
                           "Priority Notices",
                           style: TextStyle(
@@ -90,7 +90,7 @@ class NoticePage extends StatelessWidget {
                     // Regular Notices
                     if (regularNotices.isNotEmpty) ...[
                       Padding(
-                        padding: EdgeInsets.all(16.0),
+                        padding: EdgeInsets.symmetric(vertical: 8,horizontal: 16),
                         child: Text(
                           "Regular Notices",
                           style: TextStyle(
@@ -104,24 +104,12 @@ class NoticePage extends StatelessWidget {
                     ],
                     // Ads Section
                     SizedBox(height: 16),
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Your Ad Here",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontStyle: FontStyle.italic,
-                              color: Colors.grey[700],
-                            ),
-                          ),
+                    Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20), // Adjust the value for the desired roundness
+                        child: Image.network(
+                          "https://miro.medium.com/v2/resize:fit:1400/0*OckilgOyByn-x242.gif",
+                          fit: BoxFit.cover, // Ensures the image covers the entire container
                         ),
                       ),
                     ),

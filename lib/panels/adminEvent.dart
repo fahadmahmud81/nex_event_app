@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
+import 'package:intl/intl.dart';
 
 import 'package:nex_event_app/panels/updateEvent.dart';
 
@@ -73,6 +74,7 @@ class _EventsPageState extends State<EventsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: currentUserEmail == null
+
           ? Center(child: CircularProgressIndicator())
           : StreamBuilder<QuerySnapshot>(
         stream: eventsCollection
@@ -100,25 +102,25 @@ class _EventsPageState extends State<EventsPage> {
                   title: Text(
                     event['eventTitle'] ?? 'No Title',
                     style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                        fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(
                     'Organization: ${event['organizationName'] ?? 'Unknown'}\n'
                         'Category: ${event['eventCategory'] ?? 'None'}\n'
-                        'Deadline: ${(event['registrationDeadline'] as Timestamp).toDate()}',
-                    style: TextStyle(fontSize: 14),
+                        'Deadline: ${DateFormat("d MMMM,y | h:mm a").format((event['registrationDeadline'] as Timestamp).toDate())}',
+                    style: TextStyle(fontSize: 12),
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.edit, color: Colors.blue),
+                        icon: Icon(Icons.change_circle_outlined, color: Colors.blue,size: 30,),
                         onPressed: () {
                           _updateEvent(event, docId);
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
+                        icon: Icon(Icons.delete_forever_outlined, color: Colors.red,size: 30,),
                         onPressed: () {
                           showDialog(
                             context: context,
@@ -164,6 +166,8 @@ class _EventsPageState extends State<EventsPage> {
         },
         child: Icon(Icons.add),
         tooltip: 'Add Event',
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
       ),
     );
   }
@@ -419,7 +423,8 @@ class _CreateEventState extends State<CreateEvent> {
                 controller: _titleController,
                 decoration: InputDecoration(
                   labelText: 'Event Title',
-                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.text_fields),
+                  border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -434,9 +439,10 @@ class _CreateEventState extends State<CreateEvent> {
               TextFormField(
                 controller: _descriptionController,
                 decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.textsms_outlined),
                   labelText: 'Event Description',
                   border:
-                      OutlineInputBorder(), // Adds a border around the text field
+                      OutlineInputBorder( borderRadius: BorderRadius.circular(10)), // Adds a border around the text field
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -465,8 +471,9 @@ class _CreateEventState extends State<CreateEvent> {
               TextFormField(
                 controller: _universityShortFormController,
                 decoration: InputDecoration(
-                  labelText: 'University ShortForm (Optional)',
-                  border: OutlineInputBorder(),
+                  labelText: 'University ShortForm',
+                  prefixIcon: Icon(Icons.school_outlined),
+                  border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
                 ),
               ),
               SizedBox(
@@ -475,8 +482,9 @@ class _CreateEventState extends State<CreateEvent> {
               TextFormField(
                 controller: _deadlineController,
                 decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.lock_clock),
                   labelText: 'Registration Deadline',
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder( borderRadius: BorderRadius.circular(10)),
                 ),
                 readOnly: true,
                 // Makes the field non-editable
@@ -545,7 +553,12 @@ class _CreateEventState extends State<CreateEvent> {
               GestureDetector(
                 onTap: _pickImage,
                 child: Container(
-                  color: Colors.grey[300],
+                  decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                      borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.black12),
+                  ),
+                  // color: Colors.grey[300],
                   height: 150,
                   width: double.infinity,
                   child: _imageFile == null
@@ -555,8 +568,18 @@ class _CreateEventState extends State<CreateEvent> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  // Change this to your desired color
+                  foregroundColor: Colors.white,
+                  // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        20), // Optional: Rounded corners
+                  ),
+                ),
                 onPressed: _addEvent,
-                child: Text('Add Event'),
+                child: Text('Add Event',style: TextStyle(fontWeight: FontWeight.bold),),
               ),
             ],
           ),
