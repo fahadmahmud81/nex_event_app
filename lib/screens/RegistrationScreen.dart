@@ -211,6 +211,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
         height: 150,
         width: double.infinity,
         fit: BoxFit.cover,
+
+
       );
     } else if (!kIsWeb && _image != null) {
       return Image.file(
@@ -220,7 +222,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         fit: BoxFit.cover,
       );
     } else {
-      return Center(child: Text('Click here to select Image!'));
+      return Center(child: Text('Tap here to select an image!'));
     }
   }
 
@@ -349,16 +351,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   controller: _universityController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.school_outlined),
-                    labelText: 'University Name',
+                    labelText: 'University Name [ShortForm]',
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Enter your university name';
                     }
-                    if (value.length < 3) {
-                      return 'University name must be at least 3 characters long';
-                    }
+
                     return null;
                   },
                 ),
@@ -370,7 +370,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 InkWell(
                   onTap: _pickImage,
                   child: Container(
-                    height: 100,
+                    height: 150,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.grey[200],

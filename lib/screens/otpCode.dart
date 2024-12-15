@@ -152,8 +152,20 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
           : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+
+            SizedBox(height: 40,),
+            Container(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20), // Adjust the value for the desired roundness
+                child: Image.network(
+                  "https://miro.medium.com/v2/resize:fit:1400/0*OckilgOyByn-x242.gif",
+                  fit: BoxFit.cover, // Ensures the image covers the entire container
+                ),
+              ),
+            ),
+            SizedBox(height: 60,),
             Text(
               'A verification email has been sent to ${widget.email}.',
               textAlign: TextAlign.center,
@@ -168,6 +180,16 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
             SizedBox(height: 20),
 
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                // Change this to your desired color
+                foregroundColor: Colors.white,
+                // Text color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      20), // Optional: Rounded corners
+                ),
+              ),
               onPressed: () async {
                 User? user = _auth.currentUser;
                 await user?.reload();
@@ -182,10 +204,10 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                   );
                 }
               },
-              child: Text('I have verified my email'),
+              child: Text('I have verified my email',style: TextStyle(fontWeight: FontWeight.bold),),
             ),
 
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             TextButton(
               onPressed: () async {
                 User? user = _auth.currentUser;
@@ -194,7 +216,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                   SnackBar(content: Text('Verification email resent!')),
                 );
               },
-              child: Text('Resend Verification Email'),
+              child: Text('Resend Verification Email',style: TextStyle(fontWeight: FontWeight.bold),),
             ),
           ],
         ),
