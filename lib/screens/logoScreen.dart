@@ -1,6 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:nex_event_app/screens/splashscreen.dart';
+
+// Local notifications plugin
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
 
 class LogoSplashScreen extends StatefulWidget {
   const LogoSplashScreen({super.key});
@@ -25,6 +31,9 @@ class _LogoSplashScreenState extends State<LogoSplashScreen> with SingleTickerPr
 
     _animation = Tween<double>(begin: 0.8, end: 1.2).animate(_controller);
 
+    // Initialize Firebase Messaging and handle foreground notifications
+    _setupFirebaseMessaging();
+
     // Timer for the total duration of the splash screen
     Timer(const Duration(seconds: 6), () {
       Navigator.pushReplacement(
@@ -32,6 +41,57 @@ class _LogoSplashScreenState extends State<LogoSplashScreen> with SingleTickerPr
         MaterialPageRoute(builder: (context) => SplashScreen()),
       );
     });
+  }
+
+  Future<void> _setupFirebaseMessaging() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    // Request notification permissions
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+    print('Notification permission status: ${settings.authorizationStatus}');
+
+    // Initialize local notifications
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    // Listen to foreground messages
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+
+      // Show local notification
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              'default_channel_id',
+              'Default Notifications',
+              importance: Importance.high,
+              priority: Priority.high,
+            ),
+          ),
+        );
+      }
+    });
+
+    // Handle background messages (optional: already handled in `main.dart`)
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  }
+
+  // Background message handler
+  static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+    print('Handling background message: ${message.messageId}');
   }
 
   @override
