@@ -1,7 +1,8 @@
-NexEvent App
+# NexEvent App
 NexEvent is a Flutter-based application designed to bridge the gap between event organizers, sponsors, and students across Bangladesh. The app provides a centralized platform for users to explore, manage, and sponsor events seamlessly.
 
-Features
+# Features
+
 General Panel
 Students: Stay up to date with university and nationwide events based on your preferences.
 Sponsors: Find events to sponsor based on categories and your focus.
