@@ -25,7 +25,8 @@ Submit authentic details for club registration, including proof, official emails
 Get access to the Admin Panel post-verification.
 Screenshots
 Student Panel
-Add a screenshot here to showcase the Student Panel interface.
+![WhatsApp Image 2024-12-18 at 12 37 49_6e9d91a9](https://github.com/user-attachments/assets/76de333a-474f-427c-8c27-c785fb2d68e9)
+
 
 Club Admin Panel
 Add a screenshot here to highlight the Club Admin Panel features.
