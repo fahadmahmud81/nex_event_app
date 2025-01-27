@@ -29,6 +29,8 @@ Screenshots
 Student Panel
 1. ![WhatsApp Image 2024-12-18 at 12 37 49_6e9d91a9](https://github.com/user-attachments/assets/76de333a-474f-427c-8c27-c785fb2d68e9)
 2. ![WhatsApp Image 2024-12-18 at 12 37 48_96355a0d (Phone)](https://github.com/user-attachments/assets/66c48453-9806-47de-9b6e-5d2f224158e3)
+3. ![WhatsApp Image 2024-12-18 at 12 37 49_2fbe8e77 (Phone)](https://github.com/user-attachments/assets/d7c8b438-2eb9-403e-8bd6-1c6fefa6b4fc)
+
 
 
 
