@@ -4,25 +4,25 @@ NexEvent is a Flutter-based application designed to bridge the gap between event
 # Features
 
 General Panel:
-Students: Stay up to date with university and nationwide events based on your preferences.
-Sponsors: Find events to sponsor based on categories and your focus.
-General Users: Explore and stay informed about various events happening around Bangladesh.
+* Students: Stay up to date with university and nationwide events based on your preferences.
+* Sponsors: Find events to sponsor based on categories and your focus.
+* General Users: Explore and stay informed about various events happening around Bangladesh.
 
 Club Admin Panel:
-Manage club events, post updates, and view sponsor and organization details with ease.
+* Manage club events, post updates, and view sponsor and organization details with ease.
 
 Super Admin Panel:
--Nationwide control for managing club organizers and ensuring smooth operations of events across institutions.
+- Nationwide control for managing club organizers and ensuring smooth operations of events across institutions.
 
 # User Registration Process
 
 General Users:
--Provide your name, university, email, field of study, and other preferences.
--Verify your email with (Firebase email verification) for login completion.
+- Provide your name, university, email, field of study, and other preferences.
+- Verify your email with (Firebase email verification) for login completion.
 
 Club Admins:
--Submit authentic details for club registration, including proof, official emails, and authority verification.
--Get access to the Admin Panel post-verification.
+- Submit authentic details for club registration, including proof, official emails, and authority verification.
+- Get access to the Admin Panel post-verification.
 
 
 # Screenshots of all panels
