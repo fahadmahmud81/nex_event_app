@@ -35,13 +35,19 @@ Club Admins:
 
 ![WhatsApp Image 2024-12-18 at 12 37 44_6b0b779b (Phone)](https://github.com/user-attachments/assets/b163e5a9-9a8b-4c64-9d6f-86d4eead9128)  ![WhatsApp Image 2024-12-18 at 12 37 43_fc307761 (Phone)](https://github.com/user-attachments/assets/8369c883-d004-4a30-a9c4-d6922a2fc11b)  ![WhatsApp Image 2024-12-18 at 12 37 39_0a3bf1e0 (Phone)](https://github.com/user-attachments/assets/869bb22e-7eb0-4af1-9ff3-ff0c5d390736)
 
-![WhatsApp Image 2024-12-18 at 12 37 27_eb1a823d (Phone)](https://github.com/user-attachments/assets/ac385169-bece-4775-a1ca-53f63379d250)  ![WhatsApp Image 2024-12-18 at 12 37 26_596edaf8 (Phone)](https://github.com/user-attachments/assets/c970c325-cfe9-4d9b-9e1b-878082dd7c6e)
+![WhatsApp Image 2024-12-18 at 12 37 27_eb1a823d (Phone)](https://github.com/user-attachments/assets/ac385169-bece-4775-a1ca-53f63379d250)  ![WhatsApp Image 2024-12-18 at 12 37 26_596edaf8 (Phone)](https://github.com/user-attachments/assets/c970c325-cfe9-4d9b-9e1b-878082dd7c6e)  ![WhatsApp Image 2024-12-18 at 12 38 47_4dfbe05d (Phone)](https://github.com/user-attachments/assets/dafa101d-39b6-4f81-a7d8-066bffb53f3a)
 
 
 
 
 2. 𝐂𝐥𝐮𝐛 𝐀𝐝𝐦𝐢𝐧 𝐏𝐚𝐧𝐞𝐥:
-Add a screenshot here to highlight the Club Admin Panel features.
+
+![WhatsApp Image 2024-12-18 at 12 37 25_b0fc0655 (Phone)](https://github.com/user-attachments/assets/d3a30db3-1cb5-4f13-803a-c5de42b3c934)  ![WhatsApp Image 2024-12-18 at 12 37 25_25a77321 (Phone)](https://github.com/user-attachments/assets/5c79fc17-6e63-4cbd-83a7-e305333df923)  ![WhatsApp Image 2024-12-18 at 12 37 47_90c139c8 (Phone)](https://github.com/user-attachments/assets/b8cd590a-1a92-49be-a7af-0aacae22af3a)  
+
+![WhatsApp Image 2024-12-18 at 12 37 25_9fc35b90 (Phone)](https://github.com/user-attachments/assets/9dca1009-d141-472d-b0c1-285593068553) ![WhatsApp Image 2024-12-18 at 12 37 47_e804a616 (Phone)](https://github.com/user-attachments/assets/8af4d186-7fc2-48de-9a9c-417e391282d2)  ![WhatsApp Image 2024-12-18 at 13 56 13_1b7d56df (Phone)](https://github.com/user-attachments/assets/a5f511a3-e72d-456f-a2bd-3c24bd3e690c) 
+
+
+
 
 3. 𝐒𝐮𝐩𝐞𝐫 𝐀𝐝𝐦𝐢𝐧 𝐏𝐚𝐧𝐞𝐥
 Add a screenshot here to display the Super Admin Panel functionalities.
