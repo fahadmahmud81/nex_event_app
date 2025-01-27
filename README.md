@@ -27,7 +27,7 @@ Club Admins:
 
 # Screenshots of all panels
 
-1. 𝐒𝐭𝐮𝐝𝐞𝐧𝐭 𝐏𝐚𝐧𝐞𝐥:
+# 1. 𝐒𝐭𝐮𝐝𝐞𝐧𝐭 𝐏𝐚𝐧𝐞𝐥:
 
 ![WhatsApp Image 2024-12-18 at 12 37 49_6e9d91a9 (Phone)](https://github.com/user-attachments/assets/52e4cc54-57a0-4678-9d5a-635bcd499204) ![WhatsApp Image 2024-12-18 at 12 37 48_96355a0d (Phone)](https://github.com/user-attachments/assets/66c48453-9806-47de-9b6e-5d2f224158e3)  ![WhatsApp Image 2024-12-18 at 12 37 49_2fbe8e77 (Phone)](https://github.com/user-attachments/assets/d7c8b438-2eb9-403e-8bd6-1c6fefa6b4fc)
 
@@ -40,7 +40,7 @@ Club Admins:
 
 
 
-2. 𝐂𝐥𝐮𝐛 𝐀𝐝𝐦𝐢𝐧 𝐏𝐚𝐧𝐞𝐥:
+# 2. 𝐂𝐥𝐮𝐛 𝐀𝐝𝐦𝐢𝐧 𝐏𝐚𝐧𝐞𝐥:
 
 ![WhatsApp Image 2024-12-18 at 12 37 25_b0fc0655 (Phone)](https://github.com/user-attachments/assets/d3a30db3-1cb5-4f13-803a-c5de42b3c934)  ![WhatsApp Image 2024-12-18 at 12 37 25_25a77321 (Phone)](https://github.com/user-attachments/assets/5c79fc17-6e63-4cbd-83a7-e305333df923)  ![WhatsApp Image 2024-12-18 at 12 37 47_90c139c8 (Phone)](https://github.com/user-attachments/assets/b8cd590a-1a92-49be-a7af-0aacae22af3a)  
 
@@ -49,5 +49,19 @@ Club Admins:
 
 
 
-3. 𝐒𝐮𝐩𝐞𝐫 𝐀𝐝𝐦𝐢𝐧 𝐏𝐚𝐧𝐞𝐥
-Add a screenshot here to display the Super Admin Panel functionalities.
+# 3. 𝐒𝐮𝐩𝐞𝐫 𝐀𝐝𝐦𝐢𝐧 𝐏𝐚𝐧𝐞𝐥
+
+![WhatsApp Image 2024-12-18 at 12 37 24_c74f9485 (Phone)](https://github.com/user-attachments/assets/be5e09da-a8cf-438a-9919-591f5086d0f9)   ![WhatsApp Image 2024-12-18 at 12 37 21_bdfdd8b2 (Phone)](https://github.com/user-attachments/assets/f36b6b03-aec4-46cd-9675-17f4eea76f40)   ![WhatsApp Image 2024-12-18 at 12 37 23_92481be6 (Phone)](https://github.com/user-attachments/assets/e880ce9f-7704-40ac-bd76-5662d4ec553a)
+
+
+![WhatsApp Image 2024-12-18 at 12 37 23_5b01e446 (Phone)](https://github.com/user-attachments/assets/f4cb129b-7786-4363-9e69-31f3093cdfe3)   ![WhatsApp Image 2024-12-18 at 12 37 22_0b71f4d8 (Phone)](https://github.com/user-attachments/assets/8e95a2c1-2523-4574-adef-aa0240b2140e) ![WhatsApp Image 2024-12-18 at 12 37 22_773b5e4d (Phone)](https://github.com/user-attachments/assets/1a6b64a4-fa40-4f04-a75b-b3d5649de18d)
+
+
+![WhatsApp Image 2024-12-18 at 12 37 22_d07daadf (Phone)](https://github.com/user-attachments/assets/76fd63bf-9391-4b47-817a-9c0980c9e81e)   ![WhatsApp Image 2024-12-18 at 12 37 23_5331cf62 (Phone)](https://github.com/user-attachments/assets/ee0cc366-f668-4aa6-b9f3-64e484e7379a)  
+
+
+
+
+
+
+
