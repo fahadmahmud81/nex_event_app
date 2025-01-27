@@ -3,38 +3,45 @@ NexEvent is a Flutter-based application designed to bridge the gap between event
 
 # Features
 
-General Panel
+General Panel:
 Students: Stay up to date with university and nationwide events based on your preferences.
 Sponsors: Find events to sponsor based on categories and your focus.
 General Users: Explore and stay informed about various events happening around Bangladesh.
-Admin Panel
+
 Club Admin Panel:
-Manage club events, post updates, and view sponsor details with ease.
+Manage club events, post updates, and view sponsor and organization details with ease.
 
 Super Admin Panel:
-Nationwide control for managing club organizers and ensuring smooth operations of events across institutions.
+-Nationwide control for managing club organizers and ensuring smooth operations of events across institutions.
 
-User Registration Process
+# User Registration Process
+
 General Users:
+-Provide your name, university, email, field of study, and other preferences.
+-Verify your email with (Firebase email verification) for login completion.
 
-Provide your name, university, email, field of study, and other preferences.
-Verify your email with OTP for login completion.
 Club Admins:
-
-Submit authentic details for club registration, including proof, official emails, and authority verification.
-Get access to the Admin Panel post-verification.
-
-
-Screenshots
-Student Panel
-1. ![WhatsApp Image 2024-12-18 at 12 37 49_6e9d91a9 (Phone)](https://github.com/user-attachments/assets/52e4cc54-57a0-4678-9d5a-635bcd499204) ![WhatsApp Image 2024-12-18 at 12 37 48_96355a0d (Phone)](https://github.com/user-attachments/assets/66c48453-9806-47de-9b6e-5d2f224158e3)  ![WhatsApp Image 2024-12-18 at 12 37 49_2fbe8e77 (Phone)](https://github.com/user-attachments/assets/d7c8b438-2eb9-403e-8bd6-1c6fefa6b4fc)
+-Submit authentic details for club registration, including proof, official emails, and authority verification.
+-Get access to the Admin Panel post-verification.
 
 
+# Screenshots of all panels
+
+1. 𝐒𝐭𝐮𝐝𝐞𝐧𝐭 𝐏𝐚𝐧𝐞𝐥:
+
+![WhatsApp Image 2024-12-18 at 12 37 49_6e9d91a9 (Phone)](https://github.com/user-attachments/assets/52e4cc54-57a0-4678-9d5a-635bcd499204) ![WhatsApp Image 2024-12-18 at 12 37 48_96355a0d (Phone)](https://github.com/user-attachments/assets/66c48453-9806-47de-9b6e-5d2f224158e3)  ![WhatsApp Image 2024-12-18 at 12 37 49_2fbe8e77 (Phone)](https://github.com/user-attachments/assets/d7c8b438-2eb9-403e-8bd6-1c6fefa6b4fc)
+
+![WhatsApp Image 2024-12-18 at 19 49 36_14edbd0d (Phone)](https://github.com/user-attachments/assets/8cd3dc3a-474f-4c0b-96a8-31d4d1898cb7)  ![WhatsApp Image 2024-12-18 at 12 37 48_98b7565d (Phone)](https://github.com/user-attachments/assets/b45776e1-9c37-4b34-b008-daf8dbdbcfc6)  ![WhatsApp Image 2024-12-18 at 12 37 49_2fbe8e77 (Phone)](https://github.com/user-attachments/assets/e9db6e1d-5290-46b8-b9a6-3093f044a87d) 
+
+![WhatsApp Image 2024-12-18 at 12 37 44_6b0b779b (Phone)](https://github.com/user-attachments/assets/b163e5a9-9a8b-4c64-9d6f-86d4eead9128)  ![WhatsApp Image 2024-12-18 at 12 37 43_fc307761 (Phone)](https://github.com/user-attachments/assets/8369c883-d004-4a30-a9c4-d6922a2fc11b)  ![WhatsApp Image 2024-12-18 at 12 37 39_0a3bf1e0 (Phone)](https://github.com/user-attachments/assets/869bb22e-7eb0-4af1-9ff3-ff0c5d390736)
+
+![WhatsApp Image 2024-12-18 at 12 37 27_eb1a823d (Phone)](https://github.com/user-attachments/assets/ac385169-bece-4775-a1ca-53f63379d250)  ![WhatsApp Image 2024-12-18 at 12 37 26_596edaf8 (Phone)](https://github.com/user-attachments/assets/c970c325-cfe9-4d9b-9e1b-878082dd7c6e)
 
 
 
-Club Admin Panel
+
+2. 𝐂𝐥𝐮𝐛 𝐀𝐝𝐦𝐢𝐧 𝐏𝐚𝐧𝐞𝐥:
 Add a screenshot here to highlight the Club Admin Panel features.
 
-Super Admin Panel
+3. 𝐒𝐮𝐩𝐞𝐫 𝐀𝐝𝐦𝐢𝐧 𝐏𝐚𝐧𝐞𝐥
 Add a screenshot here to display the Super Admin Panel functionalities.
