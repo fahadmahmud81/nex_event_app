@@ -37,6 +37,7 @@ Club Admins:
 
 ![WhatsApp Image 2024-12-18 at 12 37 27_eb1a823d (Phone)](https://github.com/user-attachments/assets/ac385169-bece-4775-a1ca-53f63379d250)  ![WhatsApp Image 2024-12-18 at 12 37 26_596edaf8 (Phone)](https://github.com/user-attachments/assets/c970c325-cfe9-4d9b-9e1b-878082dd7c6e)  ![WhatsApp Image 2024-12-18 at 12 38 47_4dfbe05d (Phone)](https://github.com/user-attachments/assets/dafa101d-39b6-4f81-a7d8-066bffb53f3a)
 
+![WhatsApp Image 2024-12-18 at 12 37 49_4e0e8324 (Phone)](https://github.com/user-attachments/assets/d6ba9d61-d15d-4c06-9d8e-94e77c9e0474)
 
 
 
@@ -44,7 +45,8 @@ Club Admins:
 
 ![WhatsApp Image 2024-12-18 at 12 37 25_b0fc0655 (Phone)](https://github.com/user-attachments/assets/d3a30db3-1cb5-4f13-803a-c5de42b3c934)  ![WhatsApp Image 2024-12-18 at 12 37 25_25a77321 (Phone)](https://github.com/user-attachments/assets/5c79fc17-6e63-4cbd-83a7-e305333df923)  ![WhatsApp Image 2024-12-18 at 12 37 47_90c139c8 (Phone)](https://github.com/user-attachments/assets/b8cd590a-1a92-49be-a7af-0aacae22af3a)  
 
-![WhatsApp Image 2024-12-18 at 12 37 25_9fc35b90 (Phone)](https://github.com/user-attachments/assets/9dca1009-d141-472d-b0c1-285593068553)  ![WhatsApp Image 2024-12-18 at 12 37 24_54672624 (Phone)](https://github.com/user-attachments/assets/8a4dd834-fa28-41a2-b7cf-1aff50e92c77)   ![WhatsApp Image 2024-12-18 at 12 37 47_e804a616 (Phone)](https://github.com/user-attachments/assets/8af4d186-7fc2-48de-9a9c-417e391282d2)  ![WhatsApp Image 2024-12-18 at 13 56 13_1b7d56df (Phone)](https://github.com/user-attachments/assets/a5f511a3-e72d-456f-a2bd-3c24bd3e690c) 
+![WhatsApp Image 2024-12-18 at 12 37 25_9fc35b90 (Phone)](https://github.com/user-attachments/assets/9dca1009-d141-472d-b0c1-285593068553)  ![WhatsApp Image 2024-12-18 at 12 37 24_54672624 (Phone)](https://github.com/user-attachments/assets/8a4dd834-fa28-41a2-b7cf-1aff50e92c77)   ![WhatsApp Image 2024-12-18 at 12 37 47_e804a616 (Phone)](https://github.com/user-attachments/assets/8af4d186-7fc2-48de-9a9c-417e391282d2)  ![WhatsApp Image 2024-12-18 at 13 56 13_1b7d56df (Phone)](https://github.com/user-attachments/assets/a5f511a3-e72d-456f-a2bd-3c24bd3e690c) ![WhatsApp Image 2025-01-30 at 11 53 53_bd74d656](https://github.com/user-attachments/assets/33bff8be-888e-4483-a7cd-3c5291cf7767)
+
 
 
 
