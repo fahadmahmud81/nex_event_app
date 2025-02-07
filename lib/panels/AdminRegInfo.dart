@@ -28,11 +28,20 @@ class _RegistrationInfoPageState extends State<RegistrationInfoPage> {
     }
   }
 
-  void _removeEventFromPage(int index) {
-    setState(() {
-      events.removeAt(index);
-    });
+  void _removeEventFromPage(int index) async {
+    try {
+      final eventId = events[index]['id']; // Get the event ID
+      await FirebaseFirestore.instance.collection('eventreg').doc(eventId).delete(); // Delete the event from Firestore
+
+      // Update the UI by removing the event
+      setState(() {
+        events.removeAt(index);
+      });
+    } catch (e) {
+      print("Error deleting event: $e");
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {

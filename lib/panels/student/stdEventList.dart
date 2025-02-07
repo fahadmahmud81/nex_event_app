@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher_ios/url_launcher_ios.dart';
+import 'package:flutter/gestures.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegisteredPage extends StatelessWidget {
   @override
@@ -175,8 +178,26 @@ class RegisteredPage extends StatelessWidget {
                                         builder: (BuildContext context) {
                                           return AlertDialog(
                                             title: Text(event['eventTitle']),
-                                            content: Text(
-                                              "Description: ${event['eventDescription']}",
+                                            content: SelectableText.rich(
+                                              TextSpan(
+                                                text: "Description: ", // Static text
+                                                style: const TextStyle(color: Colors.black),
+                                                children: [
+                                                  TextSpan(
+                                                    text: event['eventDescription'],
+                                                    style: const TextStyle(color: Colors.black),
+                                                    recognizer: TapGestureRecognizer()
+                                                      ..onTap = () async {
+                                                        final url = event['eventDescription'];
+                                                        if (Uri.tryParse(url)?.hasAbsolutePath == true) {
+                                                          if (await canLaunchUrl(Uri.parse(url))) {
+                                                            await launchUrl(Uri.parse(url));
+                                                          }
+                                                        }
+                                                      },
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                             actions: [
                                               TextButton(
@@ -187,6 +208,7 @@ class RegisteredPage extends StatelessWidget {
                                               ),
                                             ],
                                           );
+
                                         },
                                       );
                                     },

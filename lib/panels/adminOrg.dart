@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrganizationsPage extends StatefulWidget {
   @override
@@ -46,6 +47,32 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
         );
       },
     );
+  }
+
+  Future<void> _launchPhone(String phoneNumber) async {
+    final Uri phoneUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+
+    if (await canLaunchUrl(phoneUri)) {
+      await launchUrl(phoneUri);
+    } else {
+      throw 'Could not launch $phoneUri';
+    }
+  }
+
+
+  void _launchEmail(String email) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: email, // Replace with the recipient's email
+      query: 'subject=Your Topic&body=Describe Your Queries Here.', // Replace with your email content
+    );
+
+    if (!await launchUrl(emailUri)) {
+      throw 'Could not launch $emailUri';
+    }
   }
 
   @override
@@ -129,14 +156,36 @@ class _OrganizationsPageState extends State<OrganizationsPage> {
                                       ),
                                     ),
                                     SizedBox(height: 8),
-                                    Text(
-                                      'Email: ${org['email'] ?? ''}',
-                                      style: TextStyle(fontSize: 14),
+                                    // Text(
+                                    //   'Email: ${org['email'] ?? ''}',
+                                    //   style: TextStyle(fontSize: 14),
+                                    // ),
+                                    InkWell(
+                                      onTap: () {
+                                        if (org['email'] != null &&
+                                            org['email']!.isNotEmpty) {
+                                          _launchEmail(org['email']!);
+                                        }
+                                      },
+                                      child: Text(
+                                        org['email'] ?? '',
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      'Contact: ${org['contact'] ?? ''}',
-                                      style: TextStyle(fontSize: 14),
+
+
+                                    SizedBox(height: 6),
+                                    GestureDetector(
+                                      onTap: () => _launchPhone(org['contact'] ?? ''),
+                                      child: Text(
+                                        org['contact'] ?? '',
+                                        style: TextStyle(fontSize: 12),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ],
                                 ),

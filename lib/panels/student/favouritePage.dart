@@ -32,9 +32,9 @@ class _FavouritesPageState extends State<FavouritesPage> {
     'Tourism Events',
   ];
 
-  void hello () {
-  String hello = 'Empty';
-}
+  void hello() {
+    String hello = 'Empty';
+  }
 
   // Method to fetch user information from Firestore
   Future<void> getUserInfo() async {
@@ -54,7 +54,8 @@ class _FavouritesPageState extends State<FavouritesPage> {
           setState(() {
             university = userData['university'] ?? '';
             userName = userData['name'] ?? '';
-            selectedCategories = List<String>.from(userData['personalized'] ?? []);
+            selectedCategories =
+                List<String>.from(userData['personalized'] ?? []);
           });
         }
       } catch (e) {
@@ -87,7 +88,8 @@ class _FavouritesPageState extends State<FavouritesPage> {
 
   // Open dialog to select categories
   void _openCategoryDialog() async {
-    List<String> tempSelectedCategories = List.from(selectedCategories); // Create a copy of selected categories
+    List<String> tempSelectedCategories =
+        List.from(selectedCategories); // Create a copy of selected categories
 
     // Show dialog with category selection
     await showDialog(
@@ -96,7 +98,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
         return StatefulBuilder(
           builder: (BuildContext context, setState) {
             return AlertDialog(
-              title: Text("Select up to 3 Categories",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
+              title: Text(
+                "Select up to 3 Categories",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -107,7 +112,8 @@ class _FavouritesPageState extends State<FavouritesPage> {
                       onChanged: (bool? selected) {
                         setState(() {
                           // If selected is true and there are less than 3 categories, add the category
-                          if (selected == true && tempSelectedCategories.length < 3) {
+                          if (selected == true &&
+                              tempSelectedCategories.length < 3) {
                             tempSelectedCategories.add(category);
                           } else if (selected == false) {
                             // If selected is false, remove the category
@@ -116,7 +122,8 @@ class _FavouritesPageState extends State<FavouritesPage> {
                             // If 3 categories are already selected, show a SnackBar
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text("You can select only 3 categories."),
+                                content:
+                                    Text("You can select only 3 categories."),
                                 duration: Duration(seconds: 2),
                               ),
                             );
@@ -131,9 +138,11 @@ class _FavouritesPageState extends State<FavouritesPage> {
                 TextButton(
                   onPressed: () async {
                     // Save the selected categories and reload the user info
-                    await saveSelectedCategories(tempSelectedCategories); // Save to Firestore
+                    await saveSelectedCategories(
+                        tempSelectedCategories); // Save to Firestore
                     setState(() {
-                      selectedCategories = tempSelectedCategories; // Update selected categories
+                      selectedCategories =
+                          tempSelectedCategories; // Update selected categories
                     });
 
                     // Fetch the updated user info (reload page)
@@ -157,7 +166,6 @@ class _FavouritesPageState extends State<FavouritesPage> {
                         );
                       },
                     );
-
                   },
                   child: Text('Save'),
                 ),
@@ -166,11 +174,13 @@ class _FavouritesPageState extends State<FavouritesPage> {
                     // Clear selections locally and in Firestore
                     setState(() {
                       selectedCategories.clear(); // Clear all selections
-                      tempSelectedCategories.clear(); // Clear temporary list as well
+                      tempSelectedCategories
+                          .clear(); // Clear temporary list as well
                     });
 
                     // Save the empty selection to Firestore
-                    await saveSelectedCategories([]); // Clear categories in Firestore
+                    await saveSelectedCategories(
+                        []); // Clear categories in Firestore
 
                     // Fetch the updated user info (reload page)
                     await getUserInfo(); // This will update the UI with the empty categories
@@ -203,8 +213,6 @@ class _FavouritesPageState extends State<FavouritesPage> {
     );
   }
 
-
-
   // Refresh function to reload user info
   Future<void> _onRefresh() async {
     await getUserInfo(); // Reload user info from Firestore
@@ -222,11 +230,13 @@ class _FavouritesPageState extends State<FavouritesPage> {
       body: RefreshIndicator(
         onRefresh: _onRefresh, // Refresh data when pulled down
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 0),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               // Row with "Edit Your Choice" button and Filter PopupMenu on the right
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
@@ -246,7 +256,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
                         ),
                       ),
                       onPressed: _openCategoryDialog,
-                      child: Text("Edit Your Choice",style: TextStyle(fontWeight: FontWeight.bold),),
+                      child: Text(
+                        "Edit Your Choice",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                     // PopupMenuButton for Filter options on the right
                     PopupMenuButton<String>(
@@ -258,8 +271,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                         print("Selected Filter: $filterOption");
                       },
                       itemBuilder: (BuildContext context) {
-                        return ['My Uni', 'Personalized']
-                            .map((String choice) {
+                        return ['My Uni', 'Personalized'].map((String choice) {
                           return PopupMenuItem<String>(
                             value: choice,
                             child: Text(choice),
@@ -270,7 +282,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
                         children: [
                           Text(
                             'Filter',
-                            style: TextStyle(fontSize: 16, color: Colors.blue,fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
                           ),
                           Icon(
                             Icons.filter_list,
@@ -283,16 +298,18 @@ class _FavouritesPageState extends State<FavouritesPage> {
                   ],
                 ),
               ),
-              SizedBox(height: 5), // Space after row
+              SizedBox(height: 5),
+              // Space after row
 
               // Display selected categories
               Center(
                 child: Text(
                   "Selected Categories: ${selectedCategories.join(', ')},",
-                  style: TextStyle(fontSize: 7), // Increased font size for visibility
+                  style: TextStyle(
+                      fontSize: 7), // Increased font size for visibility
                 ),
               ),
-            // Space after categories
+              // Space after categories
 
               // Filtered content based on the selected option (for now, a placeholder)
               Expanded(
@@ -300,31 +317,23 @@ class _FavouritesPageState extends State<FavouritesPage> {
                   padding: EdgeInsets.all(8),
                   child: filterOption == 'My Uni'
                       ? Container(
-
-
-                     child:  UserSpecificEventsPage(),
-
-                  )
+                          child: UserSpecificEventsPage(),
+                        )
                       : filterOption == 'Personalized'
-                      ? Container(
-
-
-                    child:  PersonalizedEvent(),
-
-                  )
-
-                      : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Displaying all events",
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ],
-                  ),
+                          ? Container(
+                              child: PersonalizedEvent(),
+                            )
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Displaying all events",
+                                  style: TextStyle(fontSize: 24),
+                                ),
+                              ],
+                            ),
                 ),
               ),
-
             ],
           ),
         ),

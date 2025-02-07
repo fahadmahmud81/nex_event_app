@@ -58,13 +58,13 @@ class _LoginPageState extends State<LoginPage> {
 
         // Navigate to respective panel
         if (role == 'student') {
-          Get.to(() => StudentApp(
+          Get.off(() => StudentApp(
                 userName: name,
                 userImageUrl: imageUrl,
                 userId: docId, // Pass the user ID here
               ));
         } else if (role == 'super_admin') {
-          Get.to(() => SuperApp(
+          Get.off(() => SuperApp(
                 userName: name,
                 userImageUrl: imageUrl,
                 userId: docId,

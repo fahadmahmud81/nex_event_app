@@ -72,71 +72,77 @@ class _SuperAppState extends State<SuperApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Super Admin Panel", style: TextStyle(fontSize: 16,color: Colors.white)),
-        backgroundColor: Colors.blue,
-        automaticallyImplyLeading: false, // Disable default back button
-        titleSpacing: 20,
-        actions: [
-          PopupMenuButton<String>(
-            icon: CircleAvatar(
-              backgroundImage: NetworkImage(widget.userImageUrl),
-            ),
-            onSelected: (String value) {
-              if (value == "Profile") {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(userId: widget.userId),
+    return WillPopScope(
+      onWillPop: () async {
+        // Disable the back button functionality
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Super Admin Panel", style: TextStyle(fontSize: 16,color: Colors.white)),
+          backgroundColor: Colors.blue,
+          automaticallyImplyLeading: false, // Disable default back button
+          titleSpacing: 20,
+          actions: [
+            PopupMenuButton<String>(
+              icon: CircleAvatar(
+                backgroundImage: NetworkImage(widget.userImageUrl),
+              ),
+              onSelected: (String value) {
+                if (value == "Profile") {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfilePage(userId: widget.userId),
+                    ),
+                  );
+                } else if (value == "Logout") {
+                  _showLogoutDialog(); // Show logout confirmation dialog
+                }
+              },
+              itemBuilder: (BuildContext context) {
+                return [
+                  PopupMenuItem(
+                    value: "Logout",
+                    child: Text("Logout"),
                   ),
-                );
-              } else if (value == "Logout") {
-                _showLogoutDialog(); // Show logout confirmation dialog
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  value: "Logout",
-                  child: Text("Logout"),
-                ),
-              ];
-            },
-          ),
-          SizedBox(width: 15),
-        ],
-      ),
-      body: _pages[_currentIndex], // Display the selected page
-      bottomNavigationBar: SalomonBottomBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: [
-          SalomonBottomBarItem(
-            icon: Icon(Icons.verified_user_outlined, size: 30),
-            title: Text("Access"),
-            selectedColor: Colors.blue,
-          ),
-          SalomonBottomBarItem(
-            icon: Icon(Icons.school_outlined, size: 30),
-            title: Text("Organization"),
-            selectedColor: Colors.orange,
-          ),
-          SalomonBottomBarItem(
-            icon: Icon(Icons.monetization_on_outlined, size: 30),
-            title: Text("Sponsor"),
-            selectedColor: Colors.purple,
-          ),
-          SalomonBottomBarItem(
-            icon: Icon(Icons.tips_and_updates_outlined, size: 30),
-            title: Text("Notice"),
-            selectedColor: Colors.green,
-          ),
-        ],
+                ];
+              },
+            ),
+            SizedBox(width: 15),
+          ],
+        ),
+        body: _pages[_currentIndex], // Display the selected page
+        bottomNavigationBar: SalomonBottomBar(
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          items: [
+            SalomonBottomBarItem(
+              icon: Icon(Icons.verified_user_outlined, size: 30),
+              title: Text("Access"),
+              selectedColor: Colors.blue,
+            ),
+            SalomonBottomBarItem(
+              icon: Icon(Icons.school_outlined, size: 30),
+              title: Text("Organization"),
+              selectedColor: Colors.orange,
+            ),
+            SalomonBottomBarItem(
+              icon: Icon(Icons.monetization_on_outlined, size: 30),
+              title: Text("Sponsor"),
+              selectedColor: Colors.purple,
+            ),
+            SalomonBottomBarItem(
+              icon: Icon(Icons.tips_and_updates_outlined, size: 30),
+              title: Text("Notice"),
+              selectedColor: Colors.green,
+            ),
+          ],
+        ),
       ),
     );
   }

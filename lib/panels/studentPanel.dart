@@ -4,6 +4,7 @@ import 'package:nex_event_app/panels/stdprofile.dart';
 import 'package:nex_event_app/panels/student/NoticeStd.dart';
 import 'package:nex_event_app/panels/student/favouritePage.dart';
 import 'package:nex_event_app/panels/student/homeEvent.dart';
+import 'package:nex_event_app/panels/student/settings.dart';
 import 'package:nex_event_app/panels/student/stdEventList.dart';
 import 'package:nex_event_app/screens/loginPage.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -69,75 +70,85 @@ class _StudentAppState extends State<StudentApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Welcome, ${widget.userName}", style: TextStyle(fontSize: 16)),
-        backgroundColor: Colors.grey[100],
-        automaticallyImplyLeading: false,
-        titleSpacing: 20,
-        actions: [
-          PopupMenuButton<String>(
-            icon: CircleAvatar(
-              backgroundImage: NetworkImage(widget.userImageUrl),
-            ),
-            onSelected: (String value) {
-              if (value == "Profile") {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(userId: widget.userId),
+    return WillPopScope(
+      onWillPop: () async {
+        // Disable the back button functionality
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Welcome, ${widget.userName}", style: TextStyle(fontSize: 16)),
+          backgroundColor: Colors.grey[100],
+          automaticallyImplyLeading: false,
+          titleSpacing: 20,
+          actions: [
+            PopupMenuButton<String>(
+              icon: CircleAvatar(
+                backgroundImage: NetworkImage(widget.userImageUrl),
+              ),
+              onSelected: (String value) {
+                if (value == "Profile") {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfilePage(userId: widget.userId),
+                    ),
+                  );
+                } else if (value == "Logout") {
+                  _showLogoutDialog();
+                }
+              },
+              itemBuilder: (BuildContext context) {
+                return [
+                  PopupMenuItem(
+                    value: "Profile",
+                    child: Text("Profile",style: TextStyle(fontWeight: FontWeight.bold),),
                   ),
-                );
-              } else if (value == "Logout") {
-                _showLogoutDialog();
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  value: "Profile",
-                  child: Text("Profile",style: TextStyle(fontWeight: FontWeight.bold),),
-                ),
-                PopupMenuItem(
-                  value: "Logout",
-                  child: Text("Logout",style: TextStyle(fontWeight: FontWeight.bold),),
-                ),
-              ];
-            },
-          ),
-          SizedBox(width: 15),
-        ],
-      ),
-      body: _pages[_currentIndex], // Display selected page
-      bottomNavigationBar: SalomonBottomBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: [
-          SalomonBottomBarItem(
-            icon: Icon(Icons.home_outlined, size: 30),
-            title: Text("Home"),
-            selectedColor: Colors.blue,
-          ),
-          SalomonBottomBarItem(
-            icon: Icon(Icons.favorite_border_rounded, size: 30),
-            title: Text("Favourites"),
-            selectedColor: Colors.purple,
-          ),
-          SalomonBottomBarItem(
-            icon: Icon(Icons.assignment_turned_in_outlined, size: 30),
-            title: Text("Registered"),
-            selectedColor: Colors.green,
-          ),
-          SalomonBottomBarItem(
-            icon: Icon(Icons.notifications_active_outlined, size: 30),
-            title: Text("Notice"),
-            selectedColor: Colors.orange,
-          ),
-        ],
+                  // PopupMenuItem(
+                  //   value: "Settings",
+                  //   child: Text("Settings",style: TextStyle(fontWeight: FontWeight.bold),),
+                  // ),
+                  PopupMenuItem(
+                    value: "Logout",
+                    child: Text("Logout",style: TextStyle(fontWeight: FontWeight.bold),),
+                  ),
+                ];
+              },
+            ),
+            SizedBox(width: 15),
+          ],
+        ),
+        body: _pages[_currentIndex], // Display selected page
+        bottomNavigationBar: SalomonBottomBar(
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          items: [
+            SalomonBottomBarItem(
+              icon: Icon(Icons.home_outlined, size: 30),
+              title: Text("Home"),
+              selectedColor: Colors.blue,
+            ),
+            SalomonBottomBarItem(
+              icon: Icon(Icons.favorite_border_rounded, size: 30),
+              title: Text("Favourites"),
+              selectedColor: Colors.purple,
+            ),
+            SalomonBottomBarItem(
+              icon: Icon(Icons.assignment_turned_in_outlined, size: 30),
+              title: Text("Registered"),
+              selectedColor: Colors.green,
+            ),
+            SalomonBottomBarItem(
+              icon: Icon(Icons.notifications_active_outlined, size: 30),
+              title: Text("Notice"),
+              selectedColor: Colors.orange,
+            ),
+          ],
+        ),
       ),
     );
   }

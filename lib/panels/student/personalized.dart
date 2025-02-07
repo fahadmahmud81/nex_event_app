@@ -42,6 +42,9 @@ class _UserSpecificEventsPageState extends State<PersonalizedEvent> {
             .where('eventCategory', whereIn: userCategories)
             .snapshots();
       }
+
+
+
     }
   }
 

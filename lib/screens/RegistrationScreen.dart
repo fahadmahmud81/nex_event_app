@@ -354,14 +354,26 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     labelText: 'University Name [ShortForm]',
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                   ),
+                  textCapitalization: TextCapitalization.characters, // Automatically capitalize
+                  onChanged: (value) {
+                    // Convert to uppercase and update the controller
+                    _universityController.value = TextEditingValue(
+                      text: value.toUpperCase(),
+                      selection: _universityController.selection,
+                    );
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Enter your university name';
                     }
-
+                    // Check for invalid characters (anything other than A-Z)
+                    if (!RegExp(r'^[A-Z]+$').hasMatch(value)) {
+                      return 'Only uppercase letters (A-Z) are allowed';
+                    }
                     return null;
                   },
                 ),
+
                 SizedBox(height: 16),
                 _buildPasswordField('Password', _passwordController),
                 SizedBox(height: 16),

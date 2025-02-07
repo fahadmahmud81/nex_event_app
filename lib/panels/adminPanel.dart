@@ -121,6 +121,7 @@ class _AdminAppState extends State<AdminApp> {
                       radius: 30,
                     ),
                     SizedBox(height: 10),
+        
                     Text(
                       widget.userName,
                       style: TextStyle(color: Colors.white, fontSize: 20),

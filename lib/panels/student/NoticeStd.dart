@@ -10,7 +10,7 @@ class NoticePage extends StatelessWidget {
   Widget build(BuildContext context) {
     void _launchURL() async {
       final Uri url = Uri.parse('https://club-master-cc804.web.app/');
-      if (!await launchUrl(url)) {
+      if (!await launchUrl(url,mode:LaunchMode.inAppWebView,)) {
         throw 'Could not launch $url';
       }
     }

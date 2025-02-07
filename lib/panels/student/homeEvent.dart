@@ -2,7 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // To get the current user's email
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart'; // For TapGestureRecognizer
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+// To get the current user's email
 
 class HomePage extends StatefulWidget {
   @override
@@ -39,7 +43,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    eventStream = FirebaseFirestore.instance.collection('events').snapshots();
+
+    // Get current time
+    DateTime currentTime = DateTime.now();
+
+    // Modify the query to filter events with registration deadlines in the future
+    eventStream = FirebaseFirestore.instance
+        .collection('events')
+        .where('registrationDeadline', isGreaterThan: currentTime)
+        .snapshots();
   }
 
   @override
@@ -421,7 +433,27 @@ class EventDetailsPage extends StatelessWidget {
                   SizedBox(height: 5),
                   Text('Description:',
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text(event['eventDescription']),
+                  SelectableText.rich(
+                    TextSpan(
+                      text: "", // Static text
+                      style: const TextStyle(color: Colors.black),
+                      children: [
+                        TextSpan(
+                          text: event['eventDescription'],
+                          style: const TextStyle(color: Colors.black),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              final url = event['eventDescription'];
+                              if (Uri.tryParse(url)?.hasAbsolutePath == true) {
+                                if (await canLaunchUrl(Uri.parse(url))) {
+                                  await launchUrl(Uri.parse(url));
+                                }
+                              }
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
                   Divider(),
                   Text('Org: ${event['organizationName']}'),
                   Text('Category: ${event['eventCategory']}'),
